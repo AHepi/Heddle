@@ -9,6 +9,11 @@ anything starts.
 Read this file, then enter through flows/start.yaml. Every task is routed to
 exactly one orchestrator: defect, change, or skill-update.
 
+The working method the skills implement is specified in DISCIPLINE.md
+(Evidence-Ledgered Work Discipline), captured verbatim from the human
+authority. When a skill's prose and the discipline disagree, the
+discipline is the requirement and the skill is the defect.
+
 ## Orchestrators live in flows/, and only there
 
 The split is deliberate and load-bearing. A skill is prose plus a tool list —

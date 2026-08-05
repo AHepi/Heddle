@@ -1,5 +1,38 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — discipline spec captured; skills reconciled against it (commit: this one)
+The human authority supplied the Evidence-Ledgered Work Discipline spec;
+captured verbatim as DISCIPLINE.md (amendments append-only) and audited
+every skill against it. Gaps found and closed, all prose-only (no public
+surface — names, steps, outcomes, tools — moved): navigate now reads
+ERRATA at session start and carries the seam rules ("read the seam before
+either side"; missing seam = not yet written); record now names the
+commit measured at, never rounds up negative results, skips re-running
+unchanged instruments, and promotes twice-missed workflow failures toward
+skill-update; diagnose now reads the error artifact before code
+(§4: misattributions cluster where readers skip it); reproduce carries
+the durable-check rules (anchor to meaning, never line numbers, scrub
+volatile fields); implement and execute_step carry strict cross-routing
+(park, don't fix; one tranche, one goal); execute_step pastes the
+done-criterion's real output and stops on a twice-failed step; capture is
+now verbatim + numbered REQs + append-only amendments + ambiguity routing
+(smallest reading recorded as overridable, material forks batched to the
+cheapest authority); specify requires machine-decidable checks (no check
+= not specified), traces named mechanisms before adopting, and runs the
+anti-invention pass; plan requires the mechanical blast-radius census
+with pasted hits and orders sub-tranches independently deliverable;
+validate never patches; deliver reconciles requirement-by-requirement
+(done / done-with-recorded-deviation / deferred-with-their-words);
+verify and validate state the zero-failures/never-weaken gate rule.
+Instruments: gate 21 passed, 0 failed; `heddle check` (installed
+workaround) on all four flows — no problems. Residue: unchanged from the
+previous entry (no live-model run, no summary filters, vacuous-keys hole,
+spec wording on skills/*.md), plus: DISCIPLINE.md §6's "instrument named
+where sessions start with the rule for when it's owed" is only partly
+met — README lists the instruments, but per-instrument owed-when rules
+are not yet written; and §7's failing-companion convention for equality
+checks is not yet practiced in tests_heddle.
+
 ## 2026-08-05 — one skill per step in per-workflow folders; skill-update flow (commit: this one)
 The three consolidated skills were re-split on the human's instruction:
 one step per file so each skill stays bite-sized for less capable models

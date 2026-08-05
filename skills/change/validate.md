@@ -1,6 +1,6 @@
 ---
 name: validate
-version: 3
+version: 4
 steps:
   validate:
     tools: [run_wheel, run_ring, run_gate, protected_tripwire]
@@ -29,8 +29,13 @@ match what was specified, as shown by the instruments":
    without the authorization recorded at plan time. An undeclared
    protected diff is automatically `invalid`, whatever the tests say.
 
-Quote each instrument's output. `valid` only if all four hold; otherwise
-`invalid` with the specific mismatch named — a well-named mismatch is
-what makes the parked change resumable.
+Validation never patches. Whatever you find, you fix nothing here — a
+failure routes back with evidence, and a validation record that erases
+the failure it caught is not a record.
+
+Quote each instrument's output — zero failures is the only acceptable
+gate result, and never weaken an assertion to get green. `valid` only if
+all four hold; otherwise `invalid` with the specific mismatch named — a
+well-named mismatch is what makes the parked change resumable.
 
 Outcome: valid or invalid.

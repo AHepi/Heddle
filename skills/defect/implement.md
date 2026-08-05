@@ -1,6 +1,6 @@
 ---
 name: implement
-version: 3
+version: 4
 steps:
   implement:
     tools: [read_code, write_code, write_tests, run_ring]
@@ -14,6 +14,10 @@ improved version of it. The approval covered a specific diff; anything
 else is unapproved work. If mid-edit you find the approved change is
 wrong or insufficient, stop and say so in your summary rather than
 silently substituting a better idea.
+
+Cross-routing is strict: an improvement you start wishing for mid-defect
+is parked — noted in your summary for the record — not implemented. One
+tranche, one goal.
 
 Mechanics:
 

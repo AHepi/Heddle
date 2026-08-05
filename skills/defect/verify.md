@@ -1,6 +1,6 @@
 ---
 name: verify
-version: 3
+version: 4
 steps:
   verify:
     tools: [run_wheel, run_ring, run_gate]
@@ -17,9 +17,9 @@ first, each one's actual output quoted:
    with what the wheel printed.
 2. The reproduction ring (run_ring) — the failing test from reproduce,
    now expected green. This is the fix's own instrument.
-3. The full gate (run_gate) — the entire suite. Green means every test
-   passes: no skips explained away, no "unrelated" failures waved
-   through. A failure you believe is pre-existing is still `red` — name
+3. The full gate (run_gate) — the entire suite. Zero failures is the
+   only acceptable gate result, and never weaken an assertion to get
+   green. A failure you believe is pre-existing is still `red` — name
    it and let the human decide what it means.
 
 `green` only if all three are clean; anything else is `red` with the

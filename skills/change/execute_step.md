@@ -1,6 +1,6 @@
 ---
 name: execute_step
-version: 3
+version: 4
 steps:
   execute_step:
     tools: [read_code, write_code, write_tests, run_ring]
@@ -23,10 +23,16 @@ For the item at hand:
    do not improvise a different edit; report `step_done` with a clear
    note that it could not be applied as planned, so validation fails
    honestly instead of the plan drifting silently.
-3. Run the ring covering the touched files (run_ring) and quote its
-   output. A red ring is information for validate, not something to
-   suppress — but if you broke what you just wrote, repair that now; it
-   is within the item's scope.
+3. Run the item's done-criterion and the ring covering the touched files
+   (run_ring); paste the real output. A red ring is information for
+   validate, not something to suppress — but if you broke what you just
+   wrote, repair that now; it is within the item's scope. If the same
+   item has now failed twice, stop reporting progress on it: say so
+   plainly so the flow can halt rather than grinding the loop.
+
+Cross-routing is strict: a defect discovered mid-change is parked —
+described in your summary for the record — not fixed. One tranche, one
+goal.
 
 Outcome: `step_done` after completing one item with items remaining;
 `all_done` when no unfinished items remain. `all_done` is a claim about
