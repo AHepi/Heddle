@@ -1,0 +1,13 @@
+name: start
+description: Router. Every task enters here and is routed to one orchestrator.
+items:
+  - step: navigate.navigate
+  - ask: "Purpose?"
+    options: [defect, change]
+    store_as: purpose
+  - when:
+      cond: "stored(purpose) == defect"
+      then:
+        - call: defect
+      else:
+        - call: change

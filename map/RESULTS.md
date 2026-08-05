@@ -1,5 +1,17 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — skills split to one purpose each, router added (commit: this one)
+The three multi-step skills (defect.md, change.md, record.md) were replaced
+by fourteen single-purpose skills, one step per file, step named after its
+purpose. Flows are the orchestrators: defect.yaml and change.yaml rewritten
+to the new refs, start.yaml added as the router (navigate, ask purpose,
+call one flow). grants.yaml when-lists updated to the new step names. Human
+gates now declare explicit options and store_as keys. Flat README.md added
+as the entry index for LLMs. Instrument: `heddle check` on start.yaml,
+defect.yaml, change.yaml — all print "no problems." (run from an installed
+heddle, see TRAPS entry 'self-host-runtime-dir'). Residue: flows still
+never run end-to-end with a live model.
+
 ## 2026-08-05 — workflow package landed (commit: this one)
 The evidence-ledgered workflow package (skills/, flows/, tools.yaml,
 grants.yaml, map/) is validated, not yet executed with a live model.

@@ -4,31 +4,24 @@ roles:
       form: full
       when: always
     - tool: write_map
-      form: full
-      when: [capture, specify, plan, deliver]
+      form: write_only
+      when: [goal, capture, specify, plan, deliver]
     - tool: read_code
       form: full
       when: [diagnose, reproduce, propose, specify, plan]
     - tool: read_tests
       form: full
-      when: [diagnose, reproduce, specify, plan]
+      when: [diagnose, reproduce, propose, specify, plan]
     - tool: write_tests
-      form: full
+      form: write_only
       when: [reproduce]
-      limit: 10
     - tool: run_ring
-      form: full
+      form: summary
       when: [diagnose, reproduce, propose]
-      limit: 30
     - tool: protected_tripwire
-      form: full
+      form: summary
       when: [plan]
-      limit: 2
-
   implementer:
-    - tool: read_map
-      form: full
-      when: always
     - tool: read_code
       form: full
       when: always
@@ -36,41 +29,31 @@ roles:
       form: full
       when: always
     - tool: write_code
-      form: full
+      form: write_only
       when: [implement, execute_step]
-      limit: 50
     - tool: write_tests
-      form: full
+      form: write_only
       when: [implement, execute_step]
-      limit: 20
     - tool: run_ring
-      form: full
+      form: summary
       when: [implement, execute_step]
-      limit: 40
-
   validator:
     - tool: run_ring
-      form: full
-      when: [verify]
-      limit: 5
-    - tool: run_gate
-      form: full
+      form: summary
       when: [verify, validate]
-      limit: 5
+    - tool: run_gate
+      form: summary
+      when: [verify, validate]
     - tool: protected_tripwire
-      form: full
+      form: summary
       when: [validate]
-      limit: 2
-
   recorder:
     - tool: read_map
       form: full
       when: always
     - tool: write_map
-      form: full
+      form: write_only
       when: [record]
-      limit: 20
     - tool: run_gate
-      form: full
+      form: summary
       when: [record]
-      limit: 2
