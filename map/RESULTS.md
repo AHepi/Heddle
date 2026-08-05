@@ -1,5 +1,35 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — distributable packages: triage, publish, postmortem (commit: previous one — see miss note)
+packages/<name>/ is now the home for out-of-the-box Heddle packages:
+each a complete self-contained package root (skills/, flows/,
+tools.yaml, grants.yaml, seed notes/), checkable standalone and adopted
+by copy + grants merge — the merge being the authorization moment
+(spec §9: installation is not authorisation). Deliberately outside the
+root package, which is this repo's own discipline, not an export.
+Shipped: triage (clarify → classify defect/change/question → route to
+a ready-to-run item); publish (preflight gate + clean tree → changelog
+from the record → human gate → push with a runtime-enforced limit: 1 —
+the grant-narrowing demonstration); postmortem (timeline from the
+record only → cause with evidence or honest inconclusive → one
+prevention per miss, mechanical or owed-at-a-boundary only). New
+tests_heddle/test_packages.py pins the inventory (PACKAGES) and proves
+each package loads, validates clean, parses non-vacuously, and assigns
+declared roles; AGENTS.md §3 names the new pin. Instruments: gate 35
+passed, 0 failed; `heddle check` (installed) clean on all three
+packages standalone; `heddle show` on publish confirms per-step
+visibility including the single-push grant. MISS, recorded per the
+rules this repo keeps: this entry lags its change by one commit — the
+packages commit landed without its RESULTS entry, caught at record
+time during the merge with the audit-flow push. Same-commit rule
+violated once; no second layer needed beyond this line, since the gate
+and pins were in the commit and only the narrative lagged. Residue:
+none of the three packages has run against a live model; publish's
+run_gate assumes pytest — adopters on other stacks must repoint it;
+package skill names (clarify, route, preflight, …) may collide with a
+host's names on adoption — the loader's duplicate error catches it,
+README documents the rename path.
+
 ## 2026-08-05 — audit flow: the least-privilege auditor (this commit)
 
 Permissions are not a package: grants.yaml stays human-written and
