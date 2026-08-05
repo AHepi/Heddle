@@ -59,6 +59,26 @@ roles:
     - tool: protected_tripwire
       form: summary
       when: [validate]
+  reviewer:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: read_code
+      form: full
+      when: [check]
+    - tool: read_tests
+      form: full
+      when: [check]
+    - tool: run_ring
+      form: scratch
+      when: [check]
+      limit: 20
+    - tool: record_finding
+      form: write_only
+      when: [check]
+    - tool: write_finding
+      form: write_only
+      when: [write_finding]
   editor:
     - tool: read_map
       form: full

@@ -2,8 +2,10 @@
 # writing comes first: specify records the requester's words verbatim
 # (capture tool) and turns them into a checkable requirement, then plan
 # the steps — with a human gate after the spec and after the plan —
-# before any code moves. Every exit path ends in record. Skills live in
-# skills/change/ and skills/shared/, one step per file.
+# before any code moves. After validation passes, the review sub-flow
+# reads the change adversarially before delivery. Every exit path ends
+# in record. Skills live in skills/change/ and skills/shared/, one step
+# per file.
 flow: change
 steps:
   - step: navigate.navigate
@@ -43,10 +45,21 @@ steps:
 
           - when: outcome(validate.validate) == valid
             then:
-              - step: deliver.deliver
-                as: worker
-              - step: record.record
-                as: recorder
+              # Instruments first, then the adversarial reader. Delivery
+              # happens only when both are clean.
+              - call: review
+              - when: outcome(check.check) == clean
+                then:
+                  - step: deliver.deliver
+                    as: worker
+                  - step: record.record
+                    as: recorder
+                else:
+                  - ask: "Validation passed but the adversarial review wrote findings to reports/; the change is parked until they are answered."
+                    options: [park]
+                    store_as: review_parked
+                  - step: record.record
+                    as: recorder
             else:
               - ask: "Validation failed; the mismatch is named in the step summary. The change is parked."
                 options: [park]

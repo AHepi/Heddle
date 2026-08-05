@@ -245,3 +245,16 @@ review.write_finding: {outcome: done}
     rc = main(["--root", str(pkg.root), "run", "flows/lifecycle.yaml",
                "--script", "script.yaml", "--log", str(pkg.root / "cli.jsonl")])
     assert rc == 0
+
+
+# ---- forms ------------------------------------------------------------
+
+def test_scratch_tolerates_shared_roots(tmp_path):
+    # TRAP-scratch-shared-roots: read_map, write_map, and capture all root
+    # at map/; collecting every tool root naively copies map/ twice and
+    # crashes before the tool ever runs.
+    from heddle.tools import make_scratch
+    (tmp_path / "map").mkdir()
+    (tmp_path / "map" / "x.md").write_text("x")
+    scratch = make_scratch(tmp_path, ["map/", "map/", "reports/"])
+    assert (scratch / "map" / "x.md").read_text() == "x"

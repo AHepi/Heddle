@@ -1,0 +1,27 @@
+# The adversarial reader, callable from any orchestrator after the
+# instruments pass. derive writes the expectations from authority before
+# any code is read; check attacks the implementation against them and
+# records every disagreement as a finding; collect/for_each turn the
+# findings array into one report file each. This flow is what exercises
+# the scratch form (run_ring at check) and collect/for_each — the spec
+# paths nothing else uses. It records nothing itself; the caller records.
+flow: review
+steps:
+  - step: derive.derive
+    as: reviewer
+
+  - step: check.check
+    as: reviewer
+
+  - when: outcome(check.check) == findings
+    then:
+      - collect: open_findings
+        from: tool(list_findings)
+
+      - for_each:
+          list: open_findings
+          as: f
+          steps:
+            - step: write_finding.write_finding
+              as: reviewer
+              with: {finding: f}

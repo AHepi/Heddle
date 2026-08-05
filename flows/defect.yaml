@@ -1,8 +1,10 @@
 # Orchestrator for diagnosing and fixing a defect. The order is the
 # discipline: no code moves until the failure is understood (diagnose),
 # demonstrated (reproduce), and approved by a human (propose gate).
-# Every exit path ends in record. Skills live in skills/defect/ and
-# skills/shared/, one step per file.
+# After the instruments go green, the review sub-flow reads the fix
+# adversarially before the run is recorded. Every exit path ends in
+# record. Skills live in skills/defect/ and skills/shared/, one step
+# per file.
 flow: defect
 steps:
   - step: navigate.navigate
@@ -46,6 +48,17 @@ steps:
                   as: implementer
                 - step: verify.verify
                   as: validator
+
+          # Green instruments are the fix's own claim; the review
+          # sub-flow is the adversarial reader that tries to break it.
+          - when: outcome(verify.verify) == green
+            then:
+              - call: review
+              - when: outcome(check.check) == findings
+                then:
+                  - ask: "Verify passed but the adversarial review wrote findings to reports/; review them before re-entering the flow."
+                    options: [noted]
+                    store_as: review_findings_noted
           - step: record.record
             as: recorder
         else:

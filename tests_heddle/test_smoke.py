@@ -24,7 +24,8 @@ from heddle.loader import load_flow, load_package, load_skills
 from heddle.validate import validate_package
 
 REPO = Path(__file__).resolve().parents[1]
-FLOWS = ["start.yaml", "defect.yaml", "change.yaml", "skill-update.yaml"]
+FLOWS = ["start.yaml", "defect.yaml", "change.yaml", "skill-update.yaml",
+         "review.yaml"]
 
 # One skill per step, grouped by workflow folder; skill name == step name.
 SKILLS = {
@@ -34,6 +35,7 @@ SKILLS = {
     "change": {"specify", "plan", "execute_step", "validate",
                "deliver"},
     "skill-update": {"survey", "redraft", "confirm"},
+    "review": {"derive", "check", "write_finding"},
 }
 
 
@@ -41,7 +43,7 @@ SKILLS = {
 def root_pkg(tmp_path):
     dst = tmp_path / "pkg"
     dst.mkdir()
-    for d in ("skills", "flows", "map", "heddle", "tests_heddle"):
+    for d in ("skills", "flows", "map", "heddle", "tests_heddle", "reports"):
         shutil.copytree(REPO / d, dst / d,
                         ignore=shutil.ignore_patterns("__pycache__"))
     for f in ("tools.yaml", "grants.yaml", "HEDDLE_0_1.md"):

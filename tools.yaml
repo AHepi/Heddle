@@ -82,3 +82,25 @@ capture:
   params:
     name: {pattern: "REQ-[a-z0-9-]+\\.md"}
     body: {text: true}
+
+# Adversarial-review artifacts. check records its findings as one JSON
+# array (record_finding); collect reads that same file back
+# (list_findings) so for_each can walk it; write_finding writes one
+# report per finding.
+record_finding:
+  kind: write_file
+  root: reports/
+  params:
+    name: {pattern: "findings\\.json"}
+    body: {text: true}
+
+list_findings:
+  kind: read_json
+  path: reports/findings.json
+
+write_finding:
+  kind: write_file
+  root: reports/
+  params:
+    name: {pattern: "finding-[a-z0-9-]{1,40}\\.md"}
+    body: {text: true}

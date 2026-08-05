@@ -124,7 +124,7 @@ def run_tool(name: str, tdef: dict, args: dict, pkg_root: Path,
 def make_scratch(pkg_root: Path, roots: list[str]) -> Path:
     """Copy the tool's declared roots into a temp dir; changes are discarded."""
     tmp = Path(tempfile.mkdtemp(prefix="heddle-scratch-"))
-    for r in roots:
+    for r in dict.fromkeys(roots):  # several tools may share one root
         src = (pkg_root / r)
         if src.is_dir():
             shutil.copytree(src, tmp / r)

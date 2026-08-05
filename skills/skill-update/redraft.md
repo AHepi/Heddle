@@ -1,6 +1,6 @@
 ---
 name: redraft
-version: 1
+version: 2
 steps:
   redraft:
     tools: [read_skill, write_skill]
@@ -13,10 +13,10 @@ Write the updated skill file (write_skill), exactly the change the human
 approved at the gate. House rules for every skill in this repository:
 
 - One file, one step. The file lives in its workflow's folder
-  (shared/, defect/, change/, skill-update/). Front matter declares
-  `name`, `version` (bump it), and one entry under `steps:` with the
-  step's `tools` and `outcomes`; the `## <step>` heading must match the
-  step name exactly.
+  (shared/, defect/, change/, skill-update/, review/). Front matter
+  declares `name`, `version` (bump it), and one entry under `steps:`
+  with the step's `tools` and `outcomes`; the `## <step>` heading must
+  match the step name exactly.
 - Keep the public surface stable unless the approved change says
   otherwise: skill name, step name, outcomes, and tools are referenced
   by flows, grants, and conditions. Prose is yours; names are shared.
