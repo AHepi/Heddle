@@ -1,0 +1,8 @@
+roles:
+  triager:
+    - tool: read_notes
+      form: full
+      when: [clarify, classify]
+    - tool: write_notes
+      form: write_only
+      when: [clarify, route]

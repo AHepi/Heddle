@@ -1,0 +1,11 @@
+roles:
+  analyst:
+    - tool: git_log
+      form: full
+      when: [timeline, cause]
+    - tool: read_notes
+      form: full
+      when: [timeline, cause, prevent]
+    - tool: write_notes
+      form: write_only
+      when: [timeline, prevent]

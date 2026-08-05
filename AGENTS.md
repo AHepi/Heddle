@@ -58,9 +58,11 @@ received its input, because a canned model's replies ignore the prompt):
   separate "update docs" commit is the commit that gets dropped.
 - **Every pin moves with its surface.** The smoke test pins the skill
   inventory (`SKILLS`) and the flow list (`FLOWS`) in
-  tests_heddle/test_smoke.py. Adding, removing, renaming, or moving a
-  skill or flow changes those pins in the same commit — then the wheel
-  proves it. This rule is the fix for the motivating incident above.
+  tests_heddle/test_smoke.py; the distributable-package inventory is
+  pinned as `PACKAGES` in tests_heddle/test_packages.py. Adding,
+  removing, renaming, or moving a skill, flow, or package changes the
+  matching pin in the same commit — then the wheel proves it. This
+  rule is the fix for the motivating incident above.
 - DISCIPLINE.md is verbatim authority: amendments append-only, never
   edits to what was recorded.
 

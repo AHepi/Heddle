@@ -1,0 +1,19 @@
+# Intake: clarify what is asked, classify it, route it as a
+# ready-to-run item. A question short-circuits to a human gate —
+# answering it may close the request without any routed work.
+flow: triage
+steps:
+  - step: clarify.clarify
+    as: triager
+
+  - step: classify.classify
+    as: triager
+
+  - when: outcome(classify.classify) == question
+    then:
+      - ask: "This is a question, not work. Answer it directly, or park it as a routed item?"
+        options: [answer, park]
+        store_as: question_disposition
+
+  - step: route.route
+    as: triager

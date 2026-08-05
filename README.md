@@ -102,6 +102,20 @@ outcomes, tools) is what flows, grants, and conditions depend on.
   reviewer, recorder, cartographer) may use which tool at which step.
   Call-time grants are the intersection of parent and child, never wider.
 
+## Distributable packages (packages/)
+
+Out-of-the-box functionality for other repos lives in packages/, one
+folder per package, each a complete self-contained Heddle package
+(skills/, flows/, tools.yaml, grants.yaml) — deliberately outside the
+root package, which is this repo's own working discipline and not for
+export. Shipped: **triage** (raw request → routed ready-to-run item),
+**publish** (bounded release; the push grant has `limit: 1` — the
+grant-narrowing demo), **postmortem** (incident → timeline from the
+record → cause → preventions). Adoption is copy + merge, and merging
+the grants fragment is the authorization moment — installed skills do
+nothing until granted (§9). The inventory is pinned in
+tests_heddle/test_packages.py; see packages/README.md.
+
 ## The map (map/)
 
 The map is the repo's memory. It is updated in the same commit as every

@@ -1,0 +1,12 @@
+read_notes:
+  kind: read_file
+  root: notes/
+  params:
+    path: {one_of_files_in: notes/}
+
+write_notes:
+  kind: write_file
+  root: notes/
+  params:
+    name: {pattern: "[a-z0-9-]{1,60}\\.md"}
+    body: {text: true}

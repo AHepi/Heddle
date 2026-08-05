@@ -1,0 +1,26 @@
+# Bounded release: prove releasable, write the note from the record,
+# ask the human, push exactly once. The push grant's limit: 1 is
+# enforced by the runtime — the model cannot be talked into a second
+# call. Nothing here fixes anything; a red preflight ends the flow.
+flow: publish
+steps:
+  - step: preflight.preflight
+    as: publisher
+
+  - when: outcome(preflight.preflight) == ready
+    then:
+      - step: changelog.changelog
+        as: publisher
+
+      - ask: "Release gate: the note in notes/ carries the evidence. Push?"
+        options: [push, abort]
+        store_as: release_ok
+
+      - when: stored(release_ok) == push
+        then:
+          - step: push.push
+            as: publisher
+    else:
+      - ask: "Preflight is not ready (red gate or dirty tree — see the step summary). Publishing is blocked."
+        options: [abort]
+        store_as: publish_blocked

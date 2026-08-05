@@ -1,0 +1,23 @@
+# Repoint run_gate at your own suite when adopting.
+run_gate:
+  kind: command
+  command: ["python", "-m", "pytest", "-q"]
+
+git_status:
+  kind: command
+  command: ["git", "status", "--porcelain"]
+
+git_log:
+  kind: command
+  command: ["git", "log", "--oneline", "-20"]
+
+git_push:
+  kind: command
+  command: ["git", "push"]
+
+write_note:
+  kind: write_file
+  root: notes/
+  params:
+    name: {pattern: "release-[a-z0-9.-]{1,40}\\.md"}
+    body: {text: true}

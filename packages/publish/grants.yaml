@@ -1,0 +1,19 @@
+roles:
+  publisher:
+    - tool: run_gate
+      form: summary
+      when: [preflight]
+    - tool: git_status
+      form: full
+      when: [preflight]
+    - tool: git_log
+      form: full
+      when: [changelog]
+    - tool: write_note
+      form: write_only
+      when: [changelog]
+    # The point of the package: one push, enforced by the runtime.
+    - tool: git_push
+      form: full
+      when: [push]
+      limit: 1

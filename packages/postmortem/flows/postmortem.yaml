@@ -1,0 +1,19 @@
+# Incident to infrastructure: timeline from the record, cause with
+# evidence (or an honest stop), one prevention per miss. The flow
+# repairs nothing — repairs are their own tranche in your defect flow.
+flow: postmortem
+steps:
+  - step: timeline.timeline
+    as: analyst
+
+  - step: cause.cause
+    as: analyst
+
+  - when: outcome(cause.cause) == inconclusive
+    then:
+      - ask: "Cause is inconclusive — the settling evidence is named in the step summary. Gather it and re-enter, or accept the timeline as the record?"
+        options: [gather, accept]
+        store_as: cause_disposition
+    else:
+      - step: prevent.prevent
+        as: analyst
