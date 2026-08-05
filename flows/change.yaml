@@ -1,14 +1,12 @@
 # Orchestrator for making an addition or changing functionality. The
-# writing comes first: capture the intent, specify the requirement, plan
-# the steps — with a human gate after the spec and after the plan — before
-# any code moves. Every exit path ends in record. Skills live in
+# writing comes first: specify records the requester's words verbatim
+# (capture tool) and turns them into a checkable requirement, then plan
+# the steps — with a human gate after the spec and after the plan —
+# before any code moves. Every exit path ends in record. Skills live in
 # skills/change/ and skills/shared/, one step per file.
 flow: change
 steps:
   - step: navigate.navigate
-    as: worker
-
-  - step: capture.capture
     as: worker
 
   - step: specify.specify

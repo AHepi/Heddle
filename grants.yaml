@@ -5,7 +5,7 @@ roles:
       when: always
     - tool: write_map
       form: write_only
-      when: [goal, capture, specify, plan, deliver]
+      when: [goal, specify, plan, deliver]
     - tool: read_code
       form: full
       when: [diagnose, reproduce, propose, specify, plan]
@@ -15,6 +15,9 @@ roles:
     - tool: write_tests
       form: write_only
       when: [reproduce]
+    - tool: capture
+      form: write_only
+      when: [specify]
     - tool: run_ring
       form: summary
       when: [diagnose, reproduce, propose]

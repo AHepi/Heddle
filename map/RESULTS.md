@@ -1,5 +1,25 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — capture.md lifted into a tool (commit: this one)
+On the human's instruction, the capture skill became the capture tool — the
+README's "one step per file so any skill can later be lifted into a tool"
+made concrete for the first time. What moved: tools.yaml gains `capture`
+(write_file, root map/, REQ-*.md pattern) — the mechanical act of writing
+the requester's verbatim words and numbered requirements; skills/change/
+capture.md is deleted; flows/change.yaml drops the capture step (the flow
+now runs navigate → specify → spec gate → …); specify.md absorbs the
+thinking half (verbatim quote, numbered REQs, append-only amendments,
+ambiguity by size, map cross-check) and lists the capture tool; grants
+give worker `capture` (write_only) at specify and drop the write_map grant
+at capture. No runtime files touched; the tripwire stays clean.
+Instruments: `heddle check` (installed workaround, see
+TRAP-self-host-runtime-dir) on all four flows — no problems; `heddle show
+flows/change.yaml` confirms specify sees read_map, read_code, read_tests,
+capture. Residue: unchanged from the previous entry, plus one new item —
+the capture tool's pattern overlaps write_map's REQ- branch, so REQ- docs
+are now writable through two tools; harmless (both are write_only into
+map/), but a future tightening could narrow write_map to exclude REQ-.
+
 ## 2026-08-05 — discipline spec captured; skills reconciled against it (commit: this one)
 The human authority supplied the Evidence-Ledgered Work Discipline spec;
 captured verbatim as DISCIPLINE.md (amendments append-only) and audited

@@ -27,8 +27,9 @@ skill prose, both properties are gone. So:
 - **flows/start.yaml** — router. Asks the purpose, calls one orchestrator.
 - **flows/defect.yaml** — goal, diagnose, reproduce, propose, human approval,
   implement, verify. Loops implement-verify at most twice.
-- **flows/change.yaml** — capture, specify, spec gate, plan, plan gate,
-  execute one step at a time (at most eight), validate, deliver.
+- **flows/change.yaml** — specify (recording the requester's words verbatim
+  via the capture tool), spec gate, plan, plan gate, execute one step at a
+  time (at most eight), validate, deliver.
 - **flows/skill-update.yaml** — survey a skill and its dependents, human
   approval, redraft, confirm with the smoke wheel (at most two cycles).
 
@@ -49,8 +50,8 @@ outcomes, tools) is what flows, grants, and conditions depend on.
 - **skills/shared/** — `navigate`, `record`. Used by every workflow.
 - **skills/defect/** — `goal`, `diagnose`, `reproduce`, `propose`,
   `implement`, `verify`.
-- **skills/change/** — `capture`, `specify`, `plan`, `execute_step`,
-  `validate`, `deliver`.
+- **skills/change/** — `specify`, `plan`, `execute_step`, `validate`,
+  `deliver`.
 - **skills/skill-update/** — `survey`, `redraft`, `confirm`. The workflow
   for editing skill files themselves; redraft.md carries the house rules
   every skill must follow.
@@ -71,7 +72,9 @@ outcomes, tools) is what flows, grants, and conditions depend on.
 
 - tools.yaml — every tool the model may call; a target is never free text.
   Skill files are reachable only through `read_skill`/`write_skill`, rooted
-  at skills/.
+  at skills/. The `capture` tool is the mechanical half of recording a
+  change's intent: it writes the requester's verbatim words into a REQ- doc;
+  specify wields it.
 - grants.yaml — which role (worker, implementer, validator, editor,
   recorder) may use which tool at which step. Call-time grants are the
   intersection of parent and child, never wider.

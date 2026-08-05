@@ -72,3 +72,13 @@ run_wheel:
 protected_tripwire:
   kind: command
   command: ["git", "diff", "--name-only", "HEAD", "--", "heddle/", "map/", "HEDDLE_0_1.md"]
+
+# The mechanical half of capture: write the requester's verbatim words
+# and their numbered requirements into a REQ- doc. The thinking half
+# (numbering, ambiguity routing, checkability) is specify's prose.
+capture:
+  kind: write_file
+  root: map/
+  params:
+    name: {pattern: "REQ-[a-z0-9-]+\\.md"}
+    body: {text: true}
