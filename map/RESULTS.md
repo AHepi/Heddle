@@ -1,5 +1,18 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — authorization recorded: 6bd29aa tools.py scratch fix (commit: this one)
+The human authority's verbatim words: "I approve the tools.py scratch
+fix retroactive". This closes the residue item open since 6bd29aa
+(make_scratch dedupes shared roots; flagged there as protected-adjacent
+with authorization owed) — the change is now authorized on the record,
+not merely correct. Note kept honest: the approval is retroactive, which
+PROTECTED.md's rule exists to prevent; recorded here as the exception it
+is, not a precedent (forecast protected contact at design time —
+DISCIPLINE.md §3). No code moved in this commit. Instruments: gate
+unchanged from the merge commit (25 passed, 0 failed); no reader of
+tools.py moved, so the previous measurement stands. Residue: unchanged
+otherwise.
+
 ## 2026-08-05 — cartography flow: the map re-stamps itself (this commit)
 
 The discipline's most decay-prone rule — §2 "verification stamps advance only
