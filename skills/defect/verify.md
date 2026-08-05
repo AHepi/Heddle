@@ -1,6 +1,6 @@
 ---
 name: verify
-version: 4
+version: 5
 steps:
   verify:
     tools: [run_wheel, run_ring, run_gate]
@@ -26,6 +26,9 @@ first, each one's actual output quoted:
 exact failing output. The flow loops back to implement at most once more,
 then stops and escalates. Do not spend the second cycle re-running the
 same edit hoping for a different answer — if the failure is not
-understood, report red with a clear account of what still fails.
+understood, report red with a clear account of what still fails. On the
+final red — the one that ends the loop — write the escalation for the
+human who receives it: the decision needed in ONE sentence, the
+candidate routes priced, and a recommendation with its reason.
 
 Outcome: green or red.

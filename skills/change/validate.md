@@ -1,6 +1,6 @@
 ---
 name: validate
-version: 4
+version: 5
 steps:
   validate:
     tools: [run_wheel, run_ring, run_gate, protected_tripwire]
@@ -36,6 +36,10 @@ the failure it caught is not a record.
 Quote each instrument's output — zero failures is the only acceptable
 gate result, and never weaken an assertion to get green. `valid` only if
 all four hold; otherwise `invalid` with the specific mismatch named — a
-well-named mismatch is what makes the parked change resumable.
+well-named mismatch is what makes the parked change resumable. An
+`invalid` is read by the human at the halt gate, so shape it for them:
+the decision needed in ONE sentence, the mismatch with its instrument
+output, and a recommendation (which plan item to revisit, or whether
+the spec itself was wrong) with its reason.
 
 Outcome: valid or invalid.

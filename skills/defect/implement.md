@@ -1,6 +1,6 @@
 ---
 name: implement
-version: 4
+version: 5
 steps:
   implement:
     tools: [read_code, write_code, write_tests, run_ring]
@@ -16,7 +16,10 @@ wrong or insufficient, stop and say so in your summary rather than
 silently substituting a better idea.
 
 Cross-routing is strict: an improvement you start wishing for mid-defect
-is parked — noted in your summary for the record — not implemented. One
+is parked — not implemented. Write the parked note for its future
+runner, at park time: one line of WHAT, then a ready-to-run entry
+(which flow to enter, one-goal statement, evidence pointers, end state)
+so starting it later costs a paste, not an authoring session. One
 tranche, one goal.
 
 Mechanics:

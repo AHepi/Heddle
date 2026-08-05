@@ -1,6 +1,6 @@
 ---
 name: plan
-version: 4
+version: 5
 steps:
   plan:
     tools: [read_map, read_code, read_tests, write_map, protected_tripwire]
@@ -38,6 +38,10 @@ protected entry — the approving human is then knowingly authorizing a
 protected edit. If the tripwire shows drift your plan does not explain,
 that is a stop, not a footnote.
 
-Store the ordered list in the map (write_map) as the plan of record.
+Store the ordered list in the map (write_map) as the plan of record,
+opening with a `State:` line (next item, blockers: none) that
+execute_step will refresh at every call — the plan of record is the
+only memory the loop has, and a fresh session must be able to resume
+from it alone.
 
 Outcome: planned.

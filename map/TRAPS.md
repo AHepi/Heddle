@@ -1,6 +1,19 @@
 # TRAPS — read before investigating. Entries never deleted, only rewritten
 # to say when they were fixed. A recurrence is the cheapest diagnosis.
 
+## TRAP-inventory-pin-lags-surface — fixed 2026-08-05
+Symptom: the gate is red on a clean checkout of main
+(test_skills_load_from_workflow_folders: "Extra items in the right set:
+'capture'"). Cause: the capture-to-tool commit deleted
+skills/change/capture.md but did not update the smoke test's SKILLS
+inventory pin in the same commit, and the gate was not run before that
+commit landed — its RESULTS entry cites `heddle check` and the tripwire
+only. Incident: found 2026-08-05 during the skills-organization pass.
+Fix: pin updated; the general rule is the same one the discipline
+already states for the map — an instrument that pins a surface moves in
+the SAME commit as the surface, and the gate runs before anything
+lands. An instrument nobody re-runs rots silently.
+
 ## TRAP-condition-tokenizer-lastgroup — fixed 2026-08-05
 Symptom: every `when`/`until` condition raised "bad term in condition".
 Cause: `re.Match.lastgroup` reports the LAST named group that participated

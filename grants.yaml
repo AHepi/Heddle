@@ -34,6 +34,9 @@ roles:
     - tool: read_tests
       form: full
       when: always
+    - tool: write_map
+      form: write_only
+      when: [execute_step]
     - tool: write_code
       form: write_only
       when: [implement, execute_step]
