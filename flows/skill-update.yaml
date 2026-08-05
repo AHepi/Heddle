@@ -1,0 +1,32 @@
+# Orchestrator for updating a skill file. Survey the skill and its
+# dependents, gate on human approval, then redraft and confirm with the
+# smoke wheel — at most two redraft-confirm cycles. Records on every
+# exit path.
+flow: skill-update
+steps:
+  - step: navigate.navigate
+    as: worker
+
+  - step: survey.survey
+    as: editor
+
+  - ask: "Approve updating this skill as surveyed (including any declared public-surface changes)?"
+    options: [approve, reject]
+    store_as: update_approved
+
+  - when: stored(update_approved) == approve
+    then:
+      - repeat:
+          max: 2
+          until: outcome(confirm.confirm) == confirmed
+          on_exhausted: continue
+          steps:
+            - step: redraft.redraft
+              as: editor
+            - step: confirm.confirm
+              as: editor
+      - step: record.record
+        as: recorder
+    else:
+      - step: record.record
+        as: recorder

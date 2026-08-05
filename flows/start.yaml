@@ -1,13 +1,18 @@
-name: start
-description: Router. Every task enters here and is routed to one orchestrator.
-items:
-  - step: navigate.navigate
-  - ask: "Purpose?"
-    options: [defect, change]
+# Router. Every task enters here and is routed to exactly one orchestrator.
+# The called flows are self-contained (each opens with navigate and closes
+# with record on every path), so this flow only asks and routes.
+flow: start
+steps:
+  - ask: "Purpose? A defect is behavior that is wrong today; a change is behavior that should be different tomorrow; skill-update edits a skill file itself."
+    options: [defect, change, skill-update]
     store_as: purpose
-  - when:
-      cond: "stored(purpose) == defect"
-      then:
-        - call: defect
-      else:
-        - call: change
+
+  - when: stored(purpose) == defect
+    then:
+      - call: defect
+    else:
+      - when: stored(purpose) == change
+        then:
+          - call: change
+        else:
+          - call: skill-update

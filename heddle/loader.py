@@ -86,11 +86,18 @@ def load_skill(path: Path) -> Skill:
 
 
 def load_skills(root: Path) -> dict[str, Skill]:
+    """Skills may sit directly in skills/ or grouped in subfolders (one
+    folder per workflow). Names are global regardless of folder — a
+    duplicate is an error, not a silent overwrite."""
     skills = {}
     d = root / "skills"
     if d.is_dir():
-        for p in sorted(d.glob("*.md")):
+        for p in sorted(d.rglob("*.md")):
             s = load_skill(p)
+            if s.name in skills:
+                raise HeddleError(
+                    f"{p}: skill name '{s.name}' is already declared by "
+                    f"{skills[s.name].path}")
             skills[s.name] = s
     return skills
 

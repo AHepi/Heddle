@@ -37,6 +37,21 @@ write_tests:
     path: {pattern: "test_[a-z0-9_]{1,40}\\.py"}
     body: {text: true}
 
+# Skill files themselves, for the skill-update flow. The write pattern
+# allows one workflow-folder level; _under_root still guards escapes.
+read_skill:
+  kind: read_file
+  root: skills/
+  params:
+    path: {one_of_files_in: skills/}
+
+write_skill:
+  kind: write_file
+  root: skills/
+  params:
+    path: {pattern: "([a-z0-9-]{1,30}/)?[a-z0-9_-]{1,40}\\.md"}
+    body: {text: true}
+
 run_ring:
   kind: command
   command: ["python", "-m", "pytest", "{target}", "-q", "-x"]
@@ -46,6 +61,13 @@ run_ring:
 run_gate:
   kind: command
   command: ["python", "-m", "pytest", "-q"]
+
+# The smoke wheel: one fast spin that proves the harness itself turns —
+# packages load, flows parse non-vacuously, references resolve. Cheaper
+# than a ring, far cheaper than the gate; run it first.
+run_wheel:
+  kind: command
+  command: ["python", "-m", "pytest", "tests_heddle/test_smoke.py", "-q"]
 
 protected_tripwire:
   kind: command

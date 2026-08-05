@@ -1,40 +1,63 @@
-name: change
-description: Orchestrator for making an addition or changing functionality.
-items:
+# Orchestrator for making an addition or changing functionality. The
+# writing comes first: capture the intent, specify the requirement, plan
+# the steps — with a human gate after the spec and after the plan — before
+# any code moves. Every exit path ends in record. Skills live in
+# skills/change/ and skills/shared/, one step per file.
+flow: change
+steps:
   - step: navigate.navigate
+    as: worker
+
   - step: capture.capture
+    as: worker
+
   - step: specify.specify
-  - ask: "Spec gate: approve the requirement?"
-    options: [yes, no]
+    as: worker
+
+  - ask: "Spec gate: does the REQ- doc describe what you want built, checkably?"
+    options: [approve, reject]
     store_as: spec_ok
-  - when:
-      cond: "stored(spec_ok) == yes"
-      then:
-        - step: plan.plan
-        - ask: "Plan gate: approve the plan?"
-          options: [yes, no]
-          store_as: plan_ok
-        - when:
-            cond: "stored(plan_ok) == yes"
+
+  - when: stored(spec_ok) == approve
+    then:
+      - step: plan.plan
+        as: worker
+
+      - ask: "Plan gate: approve the ordered steps exactly as written (including any declared protected-surface edits)?"
+        options: [approve, reject]
+        store_as: plan_ok
+
+      - when: stored(plan_ok) == approve
+        then:
+          # One plan item per iteration, at most eight. on_exhausted is
+          # continue so an over-long plan still reaches validate, which
+          # will report the unfinished remainder as invalid.
+          - repeat:
+              max: 8
+              until: outcome(execute_step.execute_step) == all_done
+              on_exhausted: continue
+              steps:
+                - step: execute_step.execute_step
+                  as: implementer
+
+          - step: validate.validate
+            as: validator
+
+          - when: outcome(validate.validate) == valid
             then:
-              - repeat:
-                  max: 8
-                  until: "outcome(execute.execute_step) == all_done"
-                  on_exhausted: continue
-                  body:
-                    - step: execute.execute_step
-              - step: validate.validate
-              - when:
-                  cond: "outcome(validate.validate) == valid"
-                  then:
-                    - step: deliver.deliver
-                    - step: record.record
-                  else:
-                    - ask: "Validation failed. Park the change."
-                      options: [park]
-                      store_as: validation_halted
-                    - step: record.record
-            else:
+              - step: deliver.deliver
+                as: worker
               - step: record.record
-      else:
-        - step: record.record
+                as: recorder
+            else:
+              - ask: "Validation failed; the mismatch is named in the step summary. The change is parked."
+                options: [park]
+                store_as: validation_halted
+              - step: record.record
+                as: recorder
+        else:
+          - step: record.record
+            as: recorder
+    else:
+      - step: record.record
+        as: recorder
