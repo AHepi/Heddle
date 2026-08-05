@@ -1,0 +1,64 @@
+flow: change
+steps:
+  - step: record.read_record
+    as: worker
+
+  - step: change.capture
+    as: worker
+
+  - step: change.specify
+    as: worker
+
+  - when: outcome(change.specify) == needs_human
+    then:
+      - ask: "Spec has batched questions with recommendations. Resolve and approve?"
+        options: [approved, stop]
+        store_as: spec_gate
+    else:
+      - ask: "Spec written with acceptance checks. Approve as written?"
+        options: [approved, stop]
+        store_as: spec_gate
+
+  - when: spec_gate == approved
+    then:
+      - step: change.plan
+        as: worker
+
+      - ask: "Plan pasted with blast-radius census and protected tripwire. Authorize execution?"
+        options: [authorized, revise, stop]
+        store_as: plan_gate
+
+      - when: plan_gate == authorized
+        then:
+          - repeat:
+              max: 8
+              until: outcome(change.execute_step) == all_done
+              on_exhausted: continue
+              steps:
+                - step: change.execute_step
+                  as: implementer
+
+          - when: outcome(change.execute_step) == all_done
+            then:
+              - step: change.validate
+                as: validator
+
+              - when: outcome(change.validate) == green
+                then:
+                  - step: change.deliver
+                    as: worker
+
+                  - step: record.record
+                    as: recorder
+                else:
+                  - step: record.record
+                    as: recorder
+            else:
+              - step: record.record
+                as: recorder
+        else:
+          - step: record.record
+            as: recorder
+    else:
+      - step: record.record
+        as: recorder

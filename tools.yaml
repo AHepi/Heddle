@@ -1,0 +1,52 @@
+read_map:
+  kind: read_file
+  root: map/
+  params:
+    doc: {one_of_files_in: map/}
+
+write_map:
+  kind: write_file
+  root: map/
+  params:
+    name: {pattern: "(SUB|CON|SEAM|INV|REC|REQ)-[a-z0-9-]+\\.md|(TRAPS|ERRATA|RESULTS|PROTECTED)\\.md"}
+    body: {text: true}
+
+read_code:
+  kind: read_file
+  root: heddle/
+  params:
+    path: {one_of_files_in: heddle/}
+
+write_code:
+  kind: write_file
+  root: heddle/
+  params:
+    path: {pattern: "[a-z0-9_]{1,40}\\.py"}
+    body: {text: true}
+
+read_tests:
+  kind: read_file
+  root: tests_heddle/
+  params:
+    path: {one_of_files_in: tests_heddle/}
+
+write_tests:
+  kind: write_file
+  root: tests_heddle/
+  params:
+    path: {pattern: "test_[a-z0-9_]{1,40}\\.py"}
+    body: {text: true}
+
+run_ring:
+  kind: command
+  command: ["python", "-m", "pytest", "{target}", "-q", "-x"]
+  params:
+    target: {pattern: "tests_heddle(/[a-z0-9_.]+)?(::[a-zA-Z0-9_]+)?"}
+
+run_gate:
+  kind: command
+  command: ["python", "-m", "pytest", "-q"]
+
+protected_tripwire:
+  kind: command
+  command: ["git", "diff", "--name-only", "HEAD", "--", "heddle/", "map/", "HEDDLE_0_1.md"]

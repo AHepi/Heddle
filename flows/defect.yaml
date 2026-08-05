@@ -1,0 +1,52 @@
+flow: defect
+steps:
+  - step: record.read_record
+    as: worker
+
+  - step: defect.capture_goal
+    as: worker
+
+  - step: defect.diagnose
+    as: worker
+
+  - when: outcome(defect.diagnose) == inconclusive
+    then:
+      - ask: "Diagnosis inconclusive. The evidence is in the log. Investigate yourself or re-scope?"
+        options: [rescoped, stop]
+        store_as: diagnose_gate
+      - step: record.record
+        as: recorder
+
+  - when: outcome(defect.diagnose) == diagnosed
+    then:
+      - step: defect.reproduce
+        as: worker
+
+      - when: outcome(defect.reproduce) == reproduced
+        then:
+          - step: defect.propose
+            as: worker
+
+          - ask: "Fix proposed with its boundary and protected-contact forecast. Approve?"
+            options: [approved, revise, stop]
+            store_as: fix_gate
+
+          - when: fix_gate == approved
+            then:
+              - repeat:
+                  max: 2
+                  until: outcome(defect.verify) == green
+                  on_exhausted: continue
+                  steps:
+                    - step: defect.implement
+                      as: implementer
+                    - step: defect.verify
+                      as: validator
+
+              - step: record.record
+                as: recorder
+
+      - when: outcome(defect.reproduce) == cannot_reproduce
+        then:
+          - step: record.record
+            as: recorder

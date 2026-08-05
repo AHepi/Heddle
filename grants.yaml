@@ -1,0 +1,76 @@
+roles:
+  worker:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: write_map
+      form: full
+      when: [capture, specify, plan, deliver]
+    - tool: read_code
+      form: full
+      when: [diagnose, reproduce, propose, specify, plan]
+    - tool: read_tests
+      form: full
+      when: [diagnose, reproduce, specify, plan]
+    - tool: write_tests
+      form: full
+      when: [reproduce]
+      limit: 10
+    - tool: run_ring
+      form: full
+      when: [diagnose, reproduce, propose]
+      limit: 30
+    - tool: protected_tripwire
+      form: full
+      when: [plan]
+      limit: 2
+
+  implementer:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: read_code
+      form: full
+      when: always
+    - tool: read_tests
+      form: full
+      when: always
+    - tool: write_code
+      form: full
+      when: [implement, execute_step]
+      limit: 50
+    - tool: write_tests
+      form: full
+      when: [implement, execute_step]
+      limit: 20
+    - tool: run_ring
+      form: full
+      when: [implement, execute_step]
+      limit: 40
+
+  validator:
+    - tool: run_ring
+      form: full
+      when: [verify]
+      limit: 5
+    - tool: run_gate
+      form: full
+      when: [verify, validate]
+      limit: 5
+    - tool: protected_tripwire
+      form: full
+      when: [validate]
+      limit: 2
+
+  recorder:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: write_map
+      form: full
+      when: [record]
+      limit: 20
+    - tool: run_gate
+      form: full
+      when: [record]
+      limit: 2
