@@ -1,6 +1,6 @@
 ---
 name: record
-version: 4
+version: 5
 steps:
   record:
     tools: [read_map, write_map, run_gate]
@@ -24,7 +24,13 @@ Write to map/RESULTS.md, newest entry first, dated, containing:
 - What residue remains — everything unproven or unfinished, stated so the
   next session can resume without archaeology. Accepted does not mean
   true: a result that passed review is only as good as what was actually
-  measured. "No residue" is a claim; make it only if true.
+  measured. "No residue" is a claim; make it only if true. A residue
+  item that names follow-up work is written for its future runner: one
+  line of WHAT, then a ready-to-run entry — which flow to enter
+  (defect, change, or skill-update), a one-goal statement, evidence
+  pointers, end state — so starting it costs a paste, not an authoring
+  session. If more than one item is runnable, name a recommended next
+  with one line of reason.
 
 Then two conditional ledgers:
 

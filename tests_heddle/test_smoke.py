@@ -31,7 +31,7 @@ SKILLS = {
     "shared": {"navigate", "record"},
     "defect": {"goal", "diagnose", "reproduce", "propose", "implement",
                "verify"},
-    "change": {"capture", "specify", "plan", "execute_step", "validate",
+    "change": {"specify", "plan", "execute_step", "validate",
                "deliver"},
     "skill-update": {"survey", "redraft", "confirm"},
 }

@@ -1,5 +1,33 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — branch untangled; unstick guardrails ported; red gate fixed (commit: this one)
+Three things, one pass. First, the skills-organization branch was
+content-identical to what main had already merged (its tip matched the
+squash-merge byte for byte) while main had moved on to capture-as-tool —
+the "jumble" was stale history, and the branch is restarted from main.
+Second, main's gate was RED on a clean checkout: the capture-to-tool
+commit deleted the skill but not the smoke test's SKILLS inventory pin,
+and no gate ran before it landed (see TRAP-inventory-pin-lags-surface;
+pin fixed, gate 21 passed 0 failed at this commit). Third, the four
+unstick guardrails from the authority's working repo are ported into
+the skills, translated to this harness's grammar: parked notes carry a
+ready-to-run entry written at park time (execute_step, implement,
+record's residue rule, with a recommended-next when several are
+runnable); the plan of record opens with a `State:` line that
+execute_step refreshes each call, and execute_step gains write_map to
+do it (grants: implementer + write_map at execute_step) — a fresh
+session resumes from the plan alone; and every human-facing stop leads
+with the decision in one sentence, priced options, and a recommendation
+(diagnose inconclusive, verify final red, validate invalid,
+execute_step twice-failed). Versions bumped on all seven edited skills.
+Instruments: gate 21 passed 0 failed; skill front matter loads (same
+gate); tripwire n/a (no protected surface named for skills/tests).
+Residue: unchanged from previous entries, plus none new — the
+skill-update flow was not used for these edits (they were made directly
+on the human's instruction, outside a running harness), which is
+consistent with the flow governing model-driven edits, but worth a
+thought when the harness starts self-hosting.
+
 ## 2026-08-05 — capture.md lifted into a tool (commit: this one)
 On the human's instruction, the capture skill became the capture tool — the
 README's "one step per file so any skill can later be lifted into a tool"

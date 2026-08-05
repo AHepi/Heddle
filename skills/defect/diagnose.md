@@ -1,6 +1,6 @@
 ---
 name: diagnose
-version: 4
+version: 5
 steps:
   diagnose:
     tools: [read_code, read_tests, read_map, run_ring]
@@ -32,8 +32,11 @@ and the mechanism, and the evidence converges on it and nothing else.
 Correlation ("started failing after commit X") is a lead, not a location.
 
 If two candidate mechanisms remain, or the symptom will not reproduce,
-report `inconclusive`: say what you checked, what each candidate would
-predict, and what evidence would settle it. The flow then stops and asks
-the human — that is designed behavior, not your failure.
+report `inconclusive` — written so the human can answer with a word:
+lead with the decision needed in ONE sentence, then what you checked,
+what each candidate would predict, what evidence would settle it, and
+your recommendation with its reason. The flow then stops and asks the
+human — that is designed behavior, not your failure; a stop the human
+must interrogate is half a stop.
 
 Outcome: located or inconclusive.
