@@ -3,8 +3,8 @@
 # with record on every path), so this flow only asks and routes.
 flow: start
 steps:
-  - ask: "Purpose? A defect is behavior that is wrong today; a change is behavior that should be different tomorrow; skill-update edits a skill file itself; cartography re-runs the map's recorded checks and re-stamps them."
-    options: [defect, change, skill-update, cartography]
+  - ask: "Purpose? A defect is behavior that is wrong today; a change is behavior that should be different tomorrow; skill-update edits a skill file itself; cartography re-runs the map's recorded checks and re-stamps them; audit reads the permission system and reports least-privilege proposals."
+    options: [defect, change, skill-update, cartography, audit]
     store_as: purpose
 
   - when: stored(purpose) == defect
@@ -19,4 +19,8 @@ steps:
             then:
               - call: skill-update
             else:
-              - call: cartography
+              - when: stored(purpose) == cartography
+                then:
+                  - call: cartography
+                else:
+                  - call: audit

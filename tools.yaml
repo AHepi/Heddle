@@ -142,3 +142,30 @@ restore_file:
   command: ["git", "checkout", "--", "{path}"]
   params:
     path: {pattern: "(heddle|tests_heddle)/[a-z0-9_/]{1,60}\\.py"}
+
+# Grant-audit reads. tools.yaml and grants.yaml sit at the package root,
+# where no tool may root, and a mirror copy would go stale (the decay
+# cartography exists to catch) — so the auditor reads the live files
+# through fixed zero-parameter commands. There is no target to be free
+# text: nothing the model supplies can change what is read. show_flow's
+# one parameter names a flow from a closed list.
+read_tools:
+  kind: command
+  command: ["cat", "tools.yaml"]
+
+read_grants:
+  kind: command
+  command: ["cat", "grants.yaml"]
+
+show_flow:
+  kind: command
+  command: ["python", "-m", "heddle", "--root", ".", "show", "flows/{flow}.yaml"]
+  params:
+    flow: {pattern: "(start|defect|change|skill-update|review|cartography|audit)"}
+
+write_audit:
+  kind: write_file
+  root: reports/
+  params:
+    name: {pattern: "grant-audit\\.md"}
+    body: {text: true}

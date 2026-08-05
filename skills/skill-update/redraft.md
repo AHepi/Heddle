@@ -1,6 +1,6 @@
 ---
 name: redraft
-version: 4
+version: 5
 steps:
   redraft:
     tools: [read_skill, write_skill, write_tests]
@@ -13,7 +13,8 @@ Write the updated skill file (write_skill), exactly the change the human
 approved at the gate. House rules for every skill in this repository:
 
 - One file, one step. The file lives in its workflow's folder
-  (shared/, defect/, change/, skill-update/, review/, cartography/).
+  (shared/, defect/, change/, skill-update/, review/, cartography/,
+  audit/).
   Front matter declares `name`, `version` (bump it), and one entry under
   `steps:` with the step's `tools` and `outcomes`; the `## <step>`
   heading must match the step name exactly.
