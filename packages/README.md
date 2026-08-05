@@ -49,6 +49,9 @@ TRAP-self-host-runtime-dir. From any other repo, plain `heddle` works.)
 - **postmortem/** — incident to infrastructure: timeline from the
   record only → cause named with evidence or declared inconclusive →
   one prevention per contributing miss.
+- **style/** — Pinker's Sense of Style as a workflow: critique a draft
+  against the book's checklist with quoted evidence → rewrite into
+  classic style as a new note; a sound draft skips the rewrite.
 
 The package list is pinned in tests_heddle/test_packages.py; adding or
 removing a package moves that pin in the same commit (AGENTS.md §3).

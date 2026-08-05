@@ -1,0 +1,15 @@
+# Drafts live in drafts/; both tools root there. A read target is never
+# free text (one_of_files_in), and rewrite writes a NEW note — the
+# before/after pair is the evidence the pass happened.
+read_draft:
+  kind: read_file
+  root: drafts/
+  params:
+    path: {one_of_files_in: drafts/}
+
+write_draft:
+  kind: write_file
+  root: drafts/
+  params:
+    name: {pattern: "[a-z0-9-]{1,60}\\.md"}
+    body: {text: true}

@@ -1,0 +1,14 @@
+# Pinker's Sense of Style as a workflow: critique holds the draft
+# against the checklist (classic style, the curse of knowledge, zombie
+# nouns, the tree, arcs of coherence, usage) with quoted evidence;
+# rewrite re-sees the draft and writes a NEW note — the original stays
+# as the before/after evidence. A sound draft skips the rewrite.
+flow: style
+steps:
+  - step: critique.critique
+    as: stylist
+
+  - when: outcome(critique.critique) == needs_work
+    then:
+      - step: rewrite.rewrite
+        as: stylist

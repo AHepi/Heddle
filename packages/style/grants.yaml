@@ -1,0 +1,8 @@
+roles:
+  stylist:
+    - tool: read_draft
+      form: full
+      when: [critique, rewrite]
+    - tool: write_draft
+      form: write_only
+      when: [rewrite]
