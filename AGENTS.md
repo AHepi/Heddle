@@ -35,6 +35,23 @@ CI (.github/workflows/gate.yml) re-runs the gate on every push and pull
 request. CI going red after you pushed means you skipped an owed
 instrument — fix forward immediately and record the miss.
 
+Two rules about what evidence *means*, from the 2026-08-05 review-package
+incident (a "scripted live run … end to end" shipped a step that never
+received its input, because a canned model's replies ignore the prompt):
+
+- **Evidence names its observation surface.** State what the instrument
+  could NOT see, next to what it showed. A scripted/canned run proves
+  control flow only — it can never verify what a step's model receives.
+  Any claim about model-visible content (prompts, bindings, visible
+  tools) requires a probe that captured it; if no probe exists for an
+  observable, write one before claiming it works
+  (tests_heddle/test_regressions.py is the pattern).
+- **Trap census before landing.** Grep map/TRAPS.md for every surface
+  and mechanism your change touches; a matching entry's rule binds you
+  (the `with:` leak was a recurrence of marked-yaml-line-key-leak, whose
+  entry already named the exact obligation). Paste the census result —
+  "no matching traps" is a claim, make it checkable.
+
 ## 3. Same-commit rules
 
 - The map moves in the same commit as the change it describes. A

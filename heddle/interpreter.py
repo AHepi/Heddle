@@ -111,8 +111,15 @@ class Interpreter:
 
         prompt = step.prose
         if item.get("with"):
+            # §3: `with: {finding: f}` binds the VALUE of stored name f
+            # (a for_each var or ask key); a name not in stored passes
+            # through as a literal. Marked-YAML mappings carry __line__ —
+            # strip before iterating (TRAPS marked-yaml-line-key-leak).
+            bindings = {
+                k: ctx.stored.get(v, v) if isinstance(v, str) else v
+                for k, v in strip_marks(item["with"]).items()}
             prompt += "\n\nInputs: " + ", ".join(
-                f"{k}={ctx.stored.get(k, v)!r}" for k, v in item["with"].items())
+                f"{k}={v!r}" for k, v in bindings.items())
 
         reply = self.model(prompt, vis, ref) or {}
         for call in reply.get("tool_calls") or []:

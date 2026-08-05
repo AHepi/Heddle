@@ -89,7 +89,9 @@ def run_tool(name: str, tdef: dict, args: dict, pkg_root: Path,
         p.parent.mkdir(parents=True, exist_ok=True)
         body = args.get("body", "")
         p.write_text(str(body), encoding="utf-8")
-        return f"wrote {p.relative_to(effective_root)}"
+        # p is resolved; resolve the root too or a relative pkg_root
+        # (heddle --root . run) crashes the receipt with ValueError.
+        return f"wrote {p.relative_to(Path(effective_root).resolve())}"
 
     if kind == "read_json":
         p = (effective_root / tdef["path"]).resolve()

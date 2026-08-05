@@ -1,6 +1,6 @@
 ---
 name: record
-version: 5
+version: 6
 steps:
   record:
     tools: [read_map, write_map, run_gate]
@@ -20,7 +20,10 @@ Write to map/RESULTS.md, newest entry first, dated, containing:
   numbers ("gate: 21 passed, 0 failed"), never adjectives ("tests
   fine"), and the commit they were measured at — a true claim can
   silently expire two commits later. Negative and inconclusive results
-  are recorded as such, never rounded up.
+  are recorded as such, never rounded up. Name what each instrument
+  could NOT observe: a scripted run proves control flow, not what any
+  step's model received — "exercised end to end" is a claim about the
+  observables you probed, no more.
 - What residue remains — everything unproven or unfinished, stated so the
   next session can resume without archaeology. Accepted does not mean
   true: a result that passed review is only as good as what was actually

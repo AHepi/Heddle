@@ -22,13 +22,19 @@ so the tokenizer misclassified tokens. Incident: first test run of the
 initial build, 12 of 16 tests failed. Fix: test `m.group("call")` etc.
 explicitly (heddle/conditions.py, `tokenize`).
 
-## TRAP-marked-yaml-line-key-leak — fixed 2026-08-05
+## TRAP-marked-yaml-line-key-leak — fixed 2026-08-05; RECURRED 2026-08-05, fixed again
 Symptom: validation crashed with `TypeError: 'int' object is not iterable`.
 Cause: the line-number marker (`__line__`) injected into every YAML mapping
 leaked into the `roles:` dict; iterating "entries" hit the int. Incident:
 same build run. Fix: `load_package` keeps only list-valued role entries
 (heddle/loader.py). Any future consumer of marked YAML must strip or filter
 markers before iterating.
+Recurrence: the review package's `with:` mapping was consumed unstripped in
+`_do_step`, so models received `__line__=27` in their prompt — exactly the
+consumer this entry warned about, missed because nobody ran a trap census
+at implement time. Fixed with strip_marks at the consumption point; probe
+pinned in tests_heddle/test_regressions.py. The census rule is now in
+AGENTS.md §2.
 
 ## TRAP-cli-flow-path-cwd — fixed 2026-08-05
 Symptom: `heddle --root PKG run flows/x.yaml` reported "flow does not
@@ -80,3 +86,24 @@ the guarantee no longer rests on memory (DISCIPLINE.md §3); and the
 skill-update flow can now actually keep the pin synced — redraft
 gained write_tests, which it previously lacked, so an in-harness skill
 removal could not have moved the pin at all.
+
+## TRAP-canned-run-proves-control-flow-only — recorded 2026-08-05
+Symptom: a defect ships in a path a RESULTS entry claims was "exercised
+end to end". Cause: scripted/canned model runs return fixed replies that
+ignore the prompt, so they verify control flow (which steps ran, in what
+order) and nothing about what any step's model received — prompt content,
+`with:` bindings, and visible-tool lists are unobserved. Incident: the
+review package's `with: {finding: f}` handed write_finding the literal
+string 'f' (and a leaked __line__ marker) through a run recorded as end
+to end; found only by a prompt-capturing probe. Fix: interpreter binding
+corrected (value of stored name, marks stripped); permanent probes in
+tests_heddle/test_regressions.py; AGENTS.md and record.md now require
+evidence to name its observation surface.
+
+## TRAP-write-receipt-relative-root — fixed 2026-08-05
+Symptom: every write-tool call crashes with ValueError ("is not in the
+subpath of ''") when the package root is relative (`heddle --root . run`).
+Cause: the write_file receipt compared a resolved path against the
+unresolved effective root (heddle/tools.py). Latent since the initial
+build; surfaced by the review-package probe. Fix: resolve the root in the
+receipt; regression test in tests_heddle/test_regressions.py.

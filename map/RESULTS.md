@@ -1,5 +1,39 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — review-package defects fixed; evidence rules promoted (commit: this one)
+Authorization for the heddle/ edits, the human's verbatim words: "Can
+you please update workflows to prevent this from happening in the
+future?" — following the review that proposed exactly these fixes.
+Three defects, each pinned red-then-green in
+tests_heddle/test_regressions.py before its fix: (1) `with:` bindings
+resolved the parameter NAME in stored values instead of the variable —
+write_finding received the literal 'f', never a finding, on every run
+of the review flow (interpreter.py `_do_step`; now resolves the stored
+value per spec §3); (2) the unstripped `with:` mapping leaked
+`__line__` into prompts — a RECURRENCE of
+TRAP-marked-yaml-line-key-leak, entry updated (strip_marks now applied
+at the consumption point); (3) write receipts crashed on relative
+package roots, latent since the initial build
+(TRAP-write-receipt-relative-root; tools.py resolves the root).
+Protected check: none of PROTECTED.md items 1–5 change semantics —
+(1) is code fixed to MEET the spec, (2)/(3) touch no protected
+surface; JSONL vocabulary, grant intersection, dispatch order, and the
+outcome contract are untouched. Process promotion, one layer per miss:
+new TRAP-canned-run-proves-control-flow-only names the vacuous-evidence
+mode; ERRATA line corrects 6bd29aa's "end to end" claim; AGENTS.md §2
+gains the observation-surface rule (evidence states what it could NOT
+see; model-visible content requires a probe) and the trap census
+(grep TRAPS for every touched surface before landing, paste the
+result); record.md carries the same observation-surface line
+in-harness. Instruments: regressions 3 failed at pre-fix code, 3
+passed post-fix; gate 25 passed, 0 failed at this commit; `heddle
+check` (installed workaround) on all five flows — no problems.
+Residue: unchanged from the previous entry; the review package is now
+believed functional but has still never run with a live model — the
+canned-run trap means only a live run or a fuller probe suite can
+claim more; retroactive authorization for 6bd29aa's tools.py change
+remains owed.
+
 ## 2026-08-05 — post-incident: session contract, mechanical gate, pin grant (commit: this one)
 Root-cause pass on the red-main incident. The record shows three
 failures stacked: (1) the capture-to-tool change landed directly on
