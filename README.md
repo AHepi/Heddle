@@ -7,7 +7,8 @@ anything starts.
 ## Where to start
 
 Read this file, then enter through flows/start.yaml. Every task is routed to
-exactly one orchestrator: defect, change, skill-update, or cartography.
+exactly one orchestrator: defect, change, skill-update, cartography, or
+audit.
 
 The working method the skills implement is specified in DISCIPLINE.md
 (Evidence-Ledgered Work Discipline), captured verbatim from the human
@@ -43,6 +44,12 @@ skill prose, both properties are gone. So:
   recorded check, re-stamp what passes, mark stale what doesn't, and
   mutation-prove one sampled check per run. Repairs nothing itself;
   stale and vacuous findings park for the defect flow.
+- **flows/audit.yaml** — the least-privilege auditor. Reads tools.yaml and
+  grants.yaml (fixed zero-parameter commands — the files live at the
+  package root, where no tool may root, and a mirror would go stale),
+  walks `heddle show` visibility for every flow, and writes one report of
+  proposals to reports/grant-audit.md. It never edits what it audits:
+  grants.yaml is the human's surface, not a skill's.
 - **flows/review.yaml** — the adversarial reader (derive, check,
   write_finding). Never routed from start.yaml; defect and change call it
   after their instruments pass.
@@ -73,6 +80,8 @@ outcomes, tools) is what flows, grants, and conditions depend on.
   reader's steps; its reports land in reports/.
 - **skills/cartography/** — `enumerate`, `verify_doc`, `mutation_probe`.
   The map-maintenance workflow's steps.
+- **skills/audit/** — `inspect`, `write_audit`. The least-privilege
+  auditor's steps; its report lands in reports/.
 
 ## Instruments, cheapest first
 
@@ -97,9 +106,12 @@ outcomes, tools) is what flows, grants, and conditions depend on.
   specify wields it. Review artifacts live in reports/ (`record_finding`,
   `list_findings`, `write_finding`); the cartography sweep's index and the
   map-check runner are `write_index`/`read_index`, `run_check`,
-  `head_commit`, and `restore_file`.
+  `head_commit`, and `restore_file`. The auditor's reads are
+  `read_tools`/`read_grants` (fixed commands) and `show_flow`; its report
+  is `write_audit`.
 - grants.yaml — which role (worker, implementer, validator, editor,
-  reviewer, recorder, cartographer) may use which tool at which step.
+  reviewer, recorder, cartographer, auditor) may use which tool at which
+  step.
   Call-time grants are the intersection of parent and child, never wider.
 
 ## Distributable packages (packages/)

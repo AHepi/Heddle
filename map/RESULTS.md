@@ -1,17 +1,59 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
-## 2026-08-05 — authorization recorded: 6bd29aa tools.py scratch fix (commit: this one)
-The human authority's verbatim words: "I approve the tools.py scratch
-fix retroactive". This closes the residue item open since 6bd29aa
-(make_scratch dedupes shared roots; flagged there as protected-adjacent
-with authorization owed) — the change is now authorized on the record,
-not merely correct. Note kept honest: the approval is retroactive, which
-PROTECTED.md's rule exists to prevent; recorded here as the exception it
-is, not a precedent (forecast protected contact at design time —
-DISCIPLINE.md §3). No code moved in this commit. Instruments: gate
-unchanged from the merge commit (25 passed, 0 failed); no reader of
-tools.py moved, so the previous measurement stands. Residue: unchanged
-otherwise.
+## 2026-08-05 — audit flow: the least-privilege auditor (this commit)
+
+Permissions are not a package: grants.yaml stays human-written and
+runtime-enforced, and no skill grants anything. What the discipline can
+grow is the auditor — `flows/audit.yaml` (navigate → inspect →
+write_audit → record), skills/audit/ (inspect, write_audit), role
+auditor. inspect reads the permission system and measures it against
+actual use; write_audit turns the findings into reports/grant-audit.md.
+The audit never edits what it audits — every finding is a proposal the
+human applies or dismisses.
+
+The design decision the task flagged, made deliberately: tools.yaml and
+grants.yaml sit at the package root, where no tool may root. Mirror
+copies were rejected (a mirror goes stale — the exact decay cartography
+exists to catch) and a new tool kind was rejected (touches the protected
+runtime for no expressiveness gain). Chosen: fixed zero-parameter
+commands (`cat tools.yaml`, `cat grants.yaml`) — the pattern run_gate,
+list_map, head_commit, and protected_tripwire already establish. There
+is no target to be free text: nothing the model supplies can change
+what is read. show_flow's one parameter names a flow from a closed
+alternation pattern. The "a target is never free text" property holds.
+
+First audit of this package, run by hand against the same four classes:
+- Over-broad `always`: implementer/read_tests (invisible at
+  execute_step, which never lists it), editor/read_map (only survey
+  lists it), reviewer/read_map (invisible at write_finding),
+  worker/read_map (invisible at reproduce); recorder/read_map and the
+  co-extensive alwayses (implementer/read_code, cartographer/read_map)
+  are proposals on the future-assignment reading of `always`.
+- Unlimited writes: 13 write grants carry no limit, including
+  recorder/write_map (the ledger writer) and implementer/write_code.
+- Dead tools: none — list_findings and read_index are unreachable from
+  skill steps but sourced by flow `collect` lines, which is why
+  inspect's dead-tool class cross-references show output's collect
+  lines before calling a tool dead.
+- Splittable roles: worker spans eight steps across two flows with
+  disjoint tool subsets (investigation vs capture/plan) — a candidate
+  split into investigator and specifier, recorded as a proposal only.
+
+Instruments: gate 22 passed in 0.62s; `heddle check` clean on all seven
+flows; `heddle show flows/audit.yaml` confirms inspect sees exactly
+read_tools/read_grants/show_flow and write_audit sees exactly
+write_audit; scripted live run rc 0 (oriented → inspected → written →
+recorded; nine tool calls, zero denials). Wheel pins moved in this
+commit (FLOWS, SKILLS). Tripwire: heddle/ and HEDDLE_0_1.md untouched;
+map/ change is this ledger entry only.
+
+Residue: audit has never run against a live model — CannedModel only.
+show_flow shells out to `python -m heddle`, so in a self-host checkout
+it reads the local runtime; harmless for show (no validation), noted
+for adopters. The four finding classes are inspect's prose, not
+machinery — a weaker model may miss a class; the report format is the
+backstop. The audit's own write grant (write_audit) carries limit 2,
+modeling the class it reports.
 
 ## 2026-08-05 — cartography flow: the map re-stamps itself (this commit)
 
@@ -41,40 +83,6 @@ Residue: cartography has never run against a live model — CannedModel only.
 `run_check`'s pytest -k-only domain is the deliberate contract for recordable
 checks. `verify_doc` rewrites whole docs to change one stamp line — content
 risk noted; keep stamps on their own line.
-
-## 2026-08-05 — review-package defects fixed; evidence rules promoted (commit: this one)
-Authorization for the heddle/ edits, the human's verbatim words: "Can
-you please update workflows to prevent this from happening in the
-future?" — following the review that proposed exactly these fixes.
-Three defects, each pinned red-then-green in
-tests_heddle/test_regressions.py before its fix: (1) `with:` bindings
-resolved the parameter NAME in stored values instead of the variable —
-write_finding received the literal 'f', never a finding, on every run
-of the review flow (interpreter.py `_do_step`; now resolves the stored
-value per spec §3); (2) the unstripped `with:` mapping leaked
-`__line__` into prompts — a RECURRENCE of
-TRAP-marked-yaml-line-key-leak, entry updated (strip_marks now applied
-at the consumption point); (3) write receipts crashed on relative
-package roots, latent since the initial build
-(TRAP-write-receipt-relative-root; tools.py resolves the root).
-Protected check: none of PROTECTED.md items 1–5 change semantics —
-(1) is code fixed to MEET the spec, (2)/(3) touch no protected
-surface; JSONL vocabulary, grant intersection, dispatch order, and the
-outcome contract are untouched. Process promotion, one layer per miss:
-new TRAP-canned-run-proves-control-flow-only names the vacuous-evidence
-mode; ERRATA line corrects 6bd29aa's "end to end" claim; AGENTS.md §2
-gains the observation-surface rule (evidence states what it could NOT
-see; model-visible content requires a probe) and the trap census
-(grep TRAPS for every touched surface before landing, paste the
-result); record.md carries the same observation-surface line
-in-harness. Instruments: regressions 3 failed at pre-fix code, 3
-passed post-fix; gate 25 passed, 0 failed at this commit; `heddle
-check` (installed workaround) on all five flows — no problems.
-Residue: unchanged from the previous entry; the review package is now
-believed functional but has still never run with a live model — the
-canned-run trap means only a live run or a fuller probe suite can
-claim more; retroactive authorization for 6bd29aa's tools.py change
-remains owed.
 
 ## 2026-08-05 — post-incident: session contract, mechanical gate, pin grant (commit: this one)
 Root-cause pass on the red-main incident. The record shows three

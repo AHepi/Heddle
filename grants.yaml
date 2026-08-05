@@ -136,3 +136,18 @@ roles:
       form: full
       when: [mutation_probe]
       limit: 2
+  auditor:
+    - tool: read_tools
+      form: full
+      when: [inspect]
+    - tool: read_grants
+      form: full
+      when: [inspect]
+    - tool: show_flow
+      form: full
+      when: [inspect]
+      limit: 10
+    - tool: write_audit
+      form: write_only
+      when: [write_audit]
+      limit: 2

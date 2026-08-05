@@ -1,0 +1,20 @@
+# The least-privilege auditor. Permissions are not a package: grants.yaml
+# is human-written and runtime-enforced, and no skill grants anything.
+# This flow only reads — tools.yaml and grants.yaml through fixed
+# zero-parameter commands (a mirror would go stale; a new tool kind
+# would touch the protected runtime), per-step visibility through
+# show_flow — and writes one report of proposals. It never edits what
+# it audits. Records on every exit path.
+flow: audit
+steps:
+  - step: navigate.navigate
+    as: worker
+
+  - step: inspect.inspect
+    as: auditor
+
+  - step: write_audit.write_audit
+    as: auditor
+
+  - step: record.record
+    as: recorder
