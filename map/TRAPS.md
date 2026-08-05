@@ -61,3 +61,22 @@ parses with a name and non-empty steps, validates clean, and assigns a
 declared role to every step. Real fix — the validator complaining about
 unrecognized top-level keys — is a heddle/validate.py change and needs
 authorization; open.
+
+## TRAP-gate-rests-on-memory — fixed 2026-08-05
+Symptom: a red gate lands on main and nobody notices until the next
+session checks out clean. Cause: the discipline's rules bind a model
+running inside a flow (verify/validate own the gate there), but most
+real work on this repo happens in sessions editing files directly —
+and nothing at session start named the instruments or when each is
+owed, and nothing mechanical ran them. The gap was even on the record:
+the 2026-08-05 discipline-reconciliation RESULTS entry listed
+"per-instrument owed-when rules are not yet written" as residue, and
+that exact gap produced the incident (capture-to-tool landing with the
+gate unrun; see TRAP-inventory-pin-lags-surface). Fix, three layers:
+AGENTS.md is the session-entry contract (owed-when table, same-commit
+pin rule, branch rules) with CLAUDE.md pointing at it;
+.github/workflows/gate.yml re-runs the gate on every push and PR so
+the guarantee no longer rests on memory (DISCIPLINE.md §3); and the
+skill-update flow can now actually keep the pin synced — redraft
+gained write_tests, which it previously lacked, so an in-harness skill
+removal could not have moved the pin at all.

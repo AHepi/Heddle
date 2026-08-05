@@ -1,9 +1,9 @@
 ---
 name: redraft
-version: 2
+version: 3
 steps:
   redraft:
-    tools: [read_skill, write_skill]
+    tools: [read_skill, write_skill, write_tests]
     outcomes: [redrafted]
 ---
 
@@ -28,6 +28,12 @@ approved at the gate. House rules for every skill in this repository:
   read-only" as prose while listing a write tool — align the list with
   the intent.
 - End with the outcome line: `Outcome: <name>.` (or `x or y`).
+- **Every pin moves with its surface.** Adding, removing, renaming, or
+  moving a skill changes the smoke wheel's inventory pin (`SKILLS` in
+  tests_heddle/test_smoke.py); update the pin in the same redraft
+  (write_tests). A pin left stale is exactly how main went red on
+  2026-08-05 (TRAP-inventory-pin-lags-surface) — confirm's wheel will
+  catch it, but catching is the backstop, not the plan.
 
 Read the current file first (read_skill); rewrite it whole rather than
 patching fragments.

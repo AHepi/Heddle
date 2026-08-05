@@ -1,0 +1,18 @@
+# The gate, mechanically enforced. Motivating incident: 2026-08-05, a
+# commit landed on main with a red gate because running it rested on
+# memory (TRAP-inventory-pin-lags-surface, TRAP-gate-rests-on-memory).
+# DISCIPLINE.md §3: back every guarantee with a mechanical tripwire.
+name: gate
+on:
+  push:
+  pull_request:
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml pytest
+      - run: python -m pytest -q

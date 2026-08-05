@@ -1,5 +1,36 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — post-incident: session contract, mechanical gate, pin grant (commit: this one)
+Root-cause pass on the red-main incident. The record shows three
+failures stacked: (1) the capture-to-tool change landed directly on
+main with the gate unrun and the smoke wheel's SKILLS pin stale
+(TRAP-inventory-pin-lags-surface, already fixed); (2) nothing at
+session start named the instruments or when each is owed — the exact
+gap the discipline-reconciliation entry had recorded as residue, so
+the incident was predicted by the ledger and happened anyway because
+prose residue binds nobody (new TRAP-gate-rests-on-memory); (3) the
+skill-update flow could not have done the removal correctly even if
+used — editor held no grant that could move the pin. Fixes, one layer
+per failure: AGENTS.md is now the contract for any agent working
+outside a running flow (session-start reading order, the owed-when
+instrument table closing the §6 residue item, same-commit pin rule,
+branch/commit rules, ledger duties), with CLAUDE.md pointing at it and
+README naming both; .github/workflows/gate.yml runs the full gate on
+every push and pull request so a red gate can no longer land silently
+(DISCIPLINE.md §3 — the guarantee no longer rests on memory); redraft
+gains write_tests (tool list + editor grant) and the explicit
+pin-moves-with-surface rule, so an in-harness skill change can keep
+the inventory pin synced in the same redraft. Instruments: gate 22
+passed, 0 failed at this commit; `heddle check` (installed workaround)
+on all five flows — no problems; wheel clean. Residue: the §6
+owed-when item is now closed; still open from before — no live-model
+run of defect/change/skill-update, summary filters unshipped,
+vacuous-keys validator hole (wheel-guarded), skills/*.md spec wording,
+§7 failing-companion convention; new — CI has not yet run on GitHub
+(first push of gate.yml will show), and AGENTS.md §2's flow-check row
+still requires the installed-heddle workaround, which CI does not
+exercise directly (the wheel's neutral-copy validation covers it).
+
 ## 2026-08-05 — branch untangled; unstick guardrails ported; red gate fixed (commit: this one)
 Three things, one pass. First, the skills-organization branch was
 content-identical to what main had already merged (its tip matched the

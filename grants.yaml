@@ -89,6 +89,9 @@ roles:
     - tool: write_skill
       form: write_only
       when: [redraft]
+    - tool: write_tests
+      form: write_only
+      when: [redraft]
     - tool: run_wheel
       form: summary
       when: [confirm]

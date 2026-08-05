@@ -14,6 +14,12 @@ The working method the skills implement is specified in DISCIPLINE.md
 authority. When a skill's prose and the discipline disagree, the
 discipline is the requirement and the skill is the defect.
 
+Working on this repo directly — as an agent or a human — rather than
+through a running flow? AGENTS.md is the contract: session-start reading
+order, which instrument is owed when, the same-commit pin rule, branch
+rules. CLAUDE.md points there. CI (.github/workflows/gate.yml) re-runs
+the gate on every push and pull request as the mechanical backstop.
+
 ## Orchestrators live in flows/, and only there
 
 The split is deliberate and load-bearing. A skill is prose plus a tool list —
