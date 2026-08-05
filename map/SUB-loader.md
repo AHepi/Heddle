@@ -11,4 +11,4 @@ State: none — pure functions of the filesystem.
 Watch: marked mappings carry `__line__`; filter before iterating (see
 TRAPS 'marked-yaml-line-key-leak').
 Check: `python -m pytest tests_heddle -q -k "loads or folders or duplicate"`
-exits clean. Verified 2026-08-05 (skills-per-folder commit): 3 passed.
+exits clean. Verified 2026-08-05 (this commit): 3 passed.

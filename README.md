@@ -7,7 +7,7 @@ anything starts.
 ## Where to start
 
 Read this file, then enter through flows/start.yaml. Every task is routed to
-exactly one orchestrator: defect, change, or skill-update.
+exactly one orchestrator: defect, change, skill-update, or cartography.
 
 The working method the skills implement is specified in DISCIPLINE.md
 (Evidence-Ledgered Work Discipline), captured verbatim from the human
@@ -32,12 +32,20 @@ skill prose, both properties are gone. So:
 
 - **flows/start.yaml** — router. Asks the purpose, calls one orchestrator.
 - **flows/defect.yaml** — goal, diagnose, reproduce, propose, human approval,
-  implement, verify. Loops implement-verify at most twice.
+  implement, verify, then the adversarial review sub-flow before record.
+  Loops implement-verify at most twice.
 - **flows/change.yaml** — specify (recording the requester's words verbatim
   via the capture tool), spec gate, plan, plan gate, execute one step at a
-  time (at most eight), validate, deliver.
+  time (at most eight), validate, review, deliver.
 - **flows/skill-update.yaml** — survey a skill and its dependents, human
   approval, redraft, confirm with the smoke wheel (at most two cycles).
+- **flows/cartography.yaml** — map maintenance. Re-run every map doc's
+  recorded check, re-stamp what passes, mark stale what doesn't, and
+  mutation-prove one sampled check per run. Repairs nothing itself;
+  stale and vacuous findings park for the defect flow.
+- **flows/review.yaml** — the adversarial reader (derive, check,
+  write_finding). Never routed from start.yaml; defect and change call it
+  after their instruments pass.
 
 Every orchestrator records on every exit path. Flow files use the spec's
 schema (`flow:` / `steps:`, `as:` for the role, `when:` with sibling
@@ -61,6 +69,10 @@ outcomes, tools) is what flows, grants, and conditions depend on.
 - **skills/skill-update/** — `survey`, `redraft`, `confirm`. The workflow
   for editing skill files themselves; redraft.md carries the house rules
   every skill must follow.
+- **skills/review/** — `derive`, `check`, `write_finding`. The adversarial
+  reader's steps; its reports land in reports/.
+- **skills/cartography/** — `enumerate`, `verify_doc`, `mutation_probe`.
+  The map-maintenance workflow's steps.
 
 ## Instruments, cheapest first
 
@@ -73,6 +85,8 @@ outcomes, tools) is what flows, grants, and conditions depend on.
 - **The tripwire** (`protected_tripwire`) — the diff against protected
   surfaces; non-empty means human authorization is required or something is
   wrong.
+- **The sweep** (`run_check`, cartography only) — one map doc's recorded
+  check, re-run to keep its stamp honest.
 
 ## Grants and tools
 
@@ -80,10 +94,13 @@ outcomes, tools) is what flows, grants, and conditions depend on.
   Skill files are reachable only through `read_skill`/`write_skill`, rooted
   at skills/. The `capture` tool is the mechanical half of recording a
   change's intent: it writes the requester's verbatim words into a REQ- doc;
-  specify wields it.
+  specify wields it. Review artifacts live in reports/ (`record_finding`,
+  `list_findings`, `write_finding`); the cartography sweep's index and the
+  map-check runner are `write_index`/`read_index`, `run_check`,
+  `head_commit`, and `restore_file`.
 - grants.yaml — which role (worker, implementer, validator, editor,
-  recorder) may use which tool at which step. Call-time grants are the
-  intersection of parent and child, never wider.
+  reviewer, recorder, cartographer) may use which tool at which step.
+  Call-time grants are the intersection of parent and child, never wider.
 
 ## The map (map/)
 

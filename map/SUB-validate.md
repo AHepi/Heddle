@@ -8,4 +8,4 @@ Watch: `when` outcome comparisons are validated by regex over the condition
 text — a condition the regex can't see is a condition not checked.
 Check: `python -m pytest tests_heddle -q -k "validator or cycle or widening or root"`
 exits clean.
-Verified 2026-08-05 @ 893044f: 4 passed.
+Verified 2026-08-05 (this commit): 8 passed.

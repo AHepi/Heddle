@@ -105,3 +105,34 @@ roles:
     - tool: run_gate
       form: summary
       when: [record]
+  cartographer:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: list_map
+      form: full
+      when: [enumerate]
+    - tool: write_index
+      form: write_only
+      when: [enumerate]
+    - tool: run_check
+      form: full
+      when: [verify_doc, mutation_probe]
+      limit: 60
+    - tool: head_commit
+      form: full
+      when: [verify_doc, mutation_probe]
+    - tool: write_map
+      form: write_only
+      when: [verify_doc, mutation_probe]
+    - tool: read_code
+      form: full
+      when: [mutation_probe]
+    - tool: write_code
+      form: write_only
+      when: [mutation_probe]
+      limit: 2
+    - tool: restore_file
+      form: full
+      when: [mutation_probe]
+      limit: 2

@@ -11,4 +11,4 @@ Watch: a target is never free text — `text` domains on read/http tools are
 rejected at validation; `one_of_files_in` resolves and re-roots candidates
 to catch `..` escapes.
 Check: `python -m pytest tests_heddle -q -k "domain or forms"` exits clean.
-Verified 2026-08-05 @ 893044f: 2 passed.
+Verified 2026-08-05 (this commit): 2 passed.

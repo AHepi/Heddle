@@ -25,7 +25,7 @@ from heddle.validate import validate_package
 
 REPO = Path(__file__).resolve().parents[1]
 FLOWS = ["start.yaml", "defect.yaml", "change.yaml", "skill-update.yaml",
-         "review.yaml"]
+         "review.yaml", "cartography.yaml"]
 
 # One skill per step, grouped by workflow folder; skill name == step name.
 SKILLS = {
@@ -36,6 +36,7 @@ SKILLS = {
                "deliver"},
     "skill-update": {"survey", "redraft", "confirm"},
     "review": {"derive", "check", "write_finding"},
+    "cartography": {"enumerate", "verify_doc", "mutation_probe"},
 }
 
 
