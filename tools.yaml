@@ -47,6 +47,13 @@ run_gate:
   kind: command
   command: ["python", "-m", "pytest", "-q"]
 
+# The smoke wheel: one fast spin that proves the harness itself turns —
+# packages load, flows parse non-vacuously, references resolve. Cheaper
+# than a ring, far cheaper than the gate; run it first.
+run_wheel:
+  kind: command
+  command: ["python", "-m", "pytest", "tests_heddle/test_smoke.py", "-q"]
+
 protected_tripwire:
   kind: command
   command: ["git", "diff", "--name-only", "HEAD", "--", "heddle/", "map/", "HEDDLE_0_1.md"]

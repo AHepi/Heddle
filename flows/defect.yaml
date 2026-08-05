@@ -1,32 +1,52 @@
-name: defect
-description: Orchestrator for diagnosing and fixing a defect.
-items:
-  - step: navigate.navigate
-  - step: goal.goal
-  - step: diagnose.diagnose
-  - when:
-      cond: "outcome(diagnose.diagnose) == inconclusive"
-      then:
-        - ask: "Diagnosis inconclusive. Provide more evidence or stop."
-          options: [stop]
-          store_as: diagnosis_halted
-        - step: record.record
-      else:
-        - step: reproduce.reproduce
-        - step: propose.propose
-        - ask: "Approve the proposed fix?"
-          options: [yes, no]
-          store_as: fix_approved
-        - when:
-            cond: "stored(fix_approved) == yes"
-            then:
-              - repeat:
-                  max: 2
-                  until: "outcome(verify.verify) == green"
-                  on_exhausted: continue
-                  body:
-                    - step: implement.implement
-                    - step: verify.verify
-              - step: record.record
-            else:
-              - step: record.record
+# Orchestrator for diagnosing and fixing a defect. The order is the
+# discipline: no code moves until the failure is understood (diagnose),
+# demonstrated (reproduce), and approved by a human (propose gate).
+# Every exit path ends in shared.record.
+flow: defect
+steps:
+  - step: shared.navigate
+    as: worker
+
+  - step: defect.goal
+    as: worker
+
+  - step: defect.diagnose
+    as: worker
+
+  - when: outcome(defect.diagnose) == inconclusive
+    then:
+      - ask: "Diagnosis is inconclusive. Review the evidence in the step summary and re-enter the flow with more; stopping here."
+        options: [stop]
+        store_as: diagnosis_halted
+      - step: shared.record
+        as: recorder
+    else:
+      - step: defect.reproduce
+        as: worker
+
+      - step: defect.propose
+        as: worker
+
+      - ask: "Approve the proposed fix exactly as written?"
+        options: [approve, reject]
+        store_as: fix_approved
+
+      - when: stored(fix_approved) == approve
+        then:
+          # Two implement-verify cycles at most. on_exhausted is continue,
+          # not stop, so the run is still recorded; verify's red outcome is
+          # what the record will show.
+          - repeat:
+              max: 2
+              until: outcome(defect.verify) == green
+              on_exhausted: continue
+              steps:
+                - step: defect.implement
+                  as: implementer
+                - step: defect.verify
+                  as: validator
+          - step: shared.record
+            as: recorder
+        else:
+          - step: shared.record
+            as: recorder

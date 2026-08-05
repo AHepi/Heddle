@@ -34,3 +34,17 @@ that on PYTHONPATH from a neutral cwd — the tool root then differs from the
 runtime dir and the guard stands down. Open question: whether self-hosting
 deserves a principled exception in the spec; that is a HEDDLE_0_2 decision,
 not something to hack around in validate.py.
+
+## TRAP-flow-vacuous-keys — open at the validator, guarded by the smoke wheel
+Symptom: `heddle check` prints "no problems" for a flow that could never
+run. Cause: `load_flow` (heddle/loader.py) reads the top-level keys
+`flow:` and `steps:`; a file using anything else (`name:`/`items:`) loads
+as `(None, [])`, and validation passes because there is nothing to check.
+Incident: 2026-08-05 — the root flows were committed in a schema of their
+own (`items:`, nested `cond:`, `repeat.body`, no `as:` roles) and their
+"no problems" results were recorded as validation (see ERRATA). Guard:
+tests_heddle/test_smoke.py (the smoke wheel) asserts every root flow
+parses with a name and non-empty steps, validates clean, and assigns a
+declared role to every step. Real fix — the validator complaining about
+unrecognized top-level keys — is a heddle/validate.py change and needs
+authorization; open.

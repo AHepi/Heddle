@@ -1,13 +1,14 @@
-name: start
-description: Router. Every task enters here and is routed to one orchestrator.
-items:
-  - step: navigate.navigate
-  - ask: "Purpose?"
+# Router. Every task enters here and is routed to exactly one orchestrator.
+# The called flows are self-contained (each opens with shared.navigate and
+# closes with shared.record on every path), so this flow only asks and routes.
+flow: start
+steps:
+  - ask: "Purpose? A defect is behavior that is wrong today; a change is behavior that should be different tomorrow."
     options: [defect, change]
     store_as: purpose
-  - when:
-      cond: "stored(purpose) == defect"
-      then:
-        - call: defect
-      else:
-        - call: change
+
+  - when: stored(purpose) == defect
+    then:
+      - call: defect
+    else:
+      - call: change

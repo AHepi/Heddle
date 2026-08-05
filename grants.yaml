@@ -18,6 +18,9 @@ roles:
     - tool: run_ring
       form: summary
       when: [diagnose, reproduce, propose]
+    - tool: run_wheel
+      form: summary
+      when: [navigate]
     - tool: protected_tripwire
       form: summary
       when: [plan]
@@ -38,6 +41,9 @@ roles:
       form: summary
       when: [implement, execute_step]
   validator:
+    - tool: run_wheel
+      form: summary
+      when: [verify, validate]
     - tool: run_ring
       form: summary
       when: [verify, validate]

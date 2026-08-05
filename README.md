@@ -7,40 +7,64 @@ anything starts.
 ## Where to start
 
 Read this file, then enter through flows/start.yaml. Every task is routed to
-exactly one orchestrator: defect or change. Each skill below does exactly one
-thing. Skill names match their file names; step names match their purpose, so
-skills/diagnose.md contains the step diagnose, referenced as diagnose.diagnose.
+exactly one orchestrator: defect or change.
 
-## Orchestrators (flows/)
+## Orchestrators live in flows/, and only there
 
-- flows/start.yaml — router. Navigates, asks the purpose, calls one flow.
-- flows/defect.yaml — goal, diagnose, reproduce, propose, human approval,
-  implement, verify, record. Loops implement-verify at most twice.
-- flows/change.yaml — capture, specify, spec gate, plan, plan gate, execute
-  one step at a time, validate, deliver, record.
+The split is deliberate and load-bearing. A skill is prose plus a tool list —
+advice for one step. A flow is control — order, conditions, bounded loops,
+human gates. The interpreter reads control from nowhere except the flow file
+it loaded at start, which is what makes `when:` conditions honest, loops
+bounded, and gates unskippable: prose cannot express any of those, and prose
+cannot be talked into rerouting them. If orchestration ever migrates into
+skill prose, both properties are gone. So:
 
-## Skills (skills/), one purpose each
+- **flows/start.yaml** — router. Asks the purpose, calls one orchestrator.
+- **flows/defect.yaml** — goal, diagnose, reproduce, propose, human approval,
+  implement, verify. Loops implement-verify at most twice. Records on every
+  exit path.
+- **flows/change.yaml** — capture, specify, spec gate, plan, plan gate,
+  execute one step at a time (at most eight), validate, deliver. Records on
+  every exit path.
 
-- skills/navigate.md — read the map before touching anything.
-- skills/goal.md — capture the defect's expected-vs-actual behavior.
-- skills/diagnose.md — locate the cause with evidence, or say inconclusive.
-- skills/reproduce.md — write the failing test that demonstrates the defect.
-- skills/propose.md — propose the minimal fix for approval.
-- skills/implement.md — apply exactly the approved fix.
-- skills/verify.md — prove the fix works and nothing else broke.
-- skills/capture.md — capture the intent of a change.
-- skills/specify.md — write the REQ- doc before planning.
-- skills/plan.md — plan as ordered steps, run the protected tripwire.
-- skills/execute.md — execute one plan step at a time.
-- skills/validate.md — check the change against its requirement.
-- skills/deliver.md — deliver; map docs move in the same commit.
-- skills/record.md — append to the ledgers, always.
+Flow files use the spec's schema (`flow:` / `steps:`, `as:` for the role,
+`when:` with sibling `then:`/`else:`, `repeat:` with `steps:`). The smoke
+wheel asserts they parse non-vacuously — see TRAP-flow-vacuous-keys for why
+that check exists.
+
+## Skills (skills/), grouped by discipline
+
+Three files. Steps are level-2 headings; the prose under a heading is the
+complete instruction that step's model receives.
+
+- **skills/shared.md** — `navigate` (orient in the map, spin the smoke
+  wheel), `record` (write the ledgers; runs on every exit path).
+- **skills/defect.md** — `goal`, `diagnose`, `reproduce`, `propose`,
+  `implement`, `verify`.
+- **skills/change.md** — `capture`, `specify`, `plan`, `execute_step`,
+  `validate`, `deliver`.
+
+References are always `skill.step` (e.g. `defect.diagnose`,
+`change.execute_step`, `shared.record`).
+
+## Instruments, cheapest first
+
+- **The smoke wheel** (`run_wheel`) — one fast spin proving the harness
+  itself turns: packages load, flows parse non-vacuously, references resolve,
+  every step has a role. Backed by tests_heddle/test_smoke.py. Run at
+  navigate, verify, and validate, always before the heavier instruments.
+- **The ring** (`run_ring`) — targeted tests for the touched area.
+- **The gate** (`run_gate`) — the full suite. Green means every test passes.
+- **The tripwire** (`protected_tripwire`) — the diff against protected
+  surfaces; non-empty means human authorization is required or something is
+  wrong.
 
 ## Grants and tools
 
 - tools.yaml — every tool the model may call; a target is never free text.
-- grants.yaml — which role may use which tool at which step. Call-time grants
-  are the intersection of parent and child, never wider.
+- grants.yaml — which role (worker, implementer, validator, recorder) may use
+  which tool at which step. Call-time grants are the intersection of parent
+  and child, never wider.
 
 ## The map (map/)
 
@@ -60,10 +84,13 @@ change.
 ## The runtime (heddle/)
 
 The interpreter and validator live in heddle/. The spec is HEDDLE_0_1.md.
-Tests live in tests_heddle/. Run them with:
+The example package under examples/heddle/ mirrors the spec's own text and
+stays as-is for that reason. Tests live in tests_heddle/. Run them with:
 
     python -m pytest -q
 
-Check a flow before running it:
+Check a flow before running it (from an installed heddle — validating this
+repo from inside itself trips the self-host guard, see
+TRAP-self-host-runtime-dir):
 
     python -m heddle --root . check flows/defect.yaml
