@@ -1,6 +1,6 @@
 ---
 name: reproduce
-version: 3
+version: 4
 steps:
   reproduce:
     tools: [write_tests, run_ring, read_code, read_tests]
@@ -24,8 +24,14 @@ test_*.py) that:
 - Is minimal. Smallest setup that reaches the mechanism. Read the
   neighboring tests (read_tests) first and match their fixtures and
   style.
+- Is durable. Anchor assertions to meaning — behavior, structure, counts;
+  minimal substrings if text is unavoidable; never line numbers. Scrub
+  volatile fields (time, randomness) before comparing. Name the
+  motivating defect in the docstring.
 
-Name the test after the defect, not a date or ticket number. The red
-output is the deliverable of this step — include it in your summary.
+The failing run is the mutation-proof: you have watched the check go red,
+so it cannot be vacuous. Name the test after the defect, not a date or
+ticket number. The red output is the deliverable of this step — include
+it in your summary.
 
 Outcome: reproduced.

@@ -1,6 +1,6 @@
 ---
 name: capture
-version: 3
+version: 4
 steps:
   capture:
     tools: [read_map, write_map]
@@ -9,22 +9,27 @@ steps:
 
 ## capture
 
-State what the user wants and why, in one or two sentences, before any
-analysis. This is the intent on the record — the REQ- doc, the plan, and
-validation will all be checked against it. Capture the want, not your
-first idea of the implementation.
+Capture is verbatim. Write the requester's words into the map exactly as
+given, then number them into requirements — REQ-1, REQ-2 — beneath the
+quote. Authority is the ledger, not memory: everything later (spec, plan,
+validation, delivery) reconciles against these numbered words, and
+amendments are append-only, never edits to what was already recorded.
 
-- What: the behavior or capability asked for, in the user's terms. If the
-  request was vague, write the most defensible concrete reading and flag
-  the vagueness rather than silently picking.
-- Why: the problem it solves. If you cannot state the why, surface that
-  now — a change with no why tends to fail its own spec gate.
+For each numbered requirement, note the why if the requester gave one; if
+they did not and it matters, that is a question for the gate, not a blank
+to fill with your own guess.
 
-Check the map (read_map): does map/RESULTS.md residue already mention
-this? Does an existing REQ- doc cover or contradict it? Note what you
-find. If the intent implies a new requirement, note that a REQ- doc will
-be written at specify time — do not write it yet.
+Handle ambiguity by size:
 
-Write the captured intent into the map (write_map).
+- Minor forks: choose the smallest defensible reading and record it as an
+  overridable assumption, labeled as such next to the requirement.
+- Material forks: do not pick. First route the question to the cheapest
+  authority — the record (RESULTS, REQ-, contracts), then the framework's
+  own behavior — and only what survives goes to the human, batched, each
+  with your recommendation. The spec gate is where that batch lands.
+
+Check the map (read_map): does RESULTS residue or an existing REQ- doc
+already cover or contradict this request? Note what you find with the
+capture (write_map).
 
 Outcome: captured.
