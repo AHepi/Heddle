@@ -7,4 +7,4 @@
 - Dispatch order is visible → domain → limit; first failure is reported,
   logged, and counts against the limit.
 Check: `python -m pytest tests_heddle -q -k "visibility or narrows"` exits
-clean. Verified 2026-08-05 @ 893044f: 2 passed.
+clean. Verified 2026-08-05 (this commit): 2 passed.

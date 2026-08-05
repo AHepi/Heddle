@@ -1,5 +1,34 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — cartography flow: the map re-stamps itself (this commit)
+
+The discipline's most decay-prone rule — §2 "verification stamps advance only
+when re-run" / "audit checks for vacuousness" — now has machinery:
+`flows/cartography.yaml` (navigate → enumerate → verify_doc per map doc →
+mutation_probe → record). Cartography never repairs; stale and vacuous park
+for the defect flow.
+
+Found by the first sweep:
+- map/SUB-validate.md stamped "4 passed @ 893044f"; its check passes 8 today.
+  A true claim that silently expired — exactly the decay this flow catches.
+- All six recorded checks re-run green today: SUB-cli 2, SUB-loader 3,
+  SUB-validate 8, SUB-interpreter 5, SUB-tools 2, INV-grant-semantics 2.
+  Stamps advanced to this commit with measured counts.
+- Mutation probe on SUB-cli's check (break cmd_check to `return 1`): check
+  went red ("1 failed, 1 passed"), restore via `git checkout --`, re-ran
+  green ("2 passed"). Proven non-vacuous.
+
+Instruments: gate 22 passed in 0.61s; `heddle check` clean on all six flows;
+`heddle show flows/cartography.yaml` confirms per-step tool visibility;
+scripted live run rc 0 (oriented → indexed → fresh → proven → recorded).
+Tripwire: heddle/ untouched; map/ changes are ledgers + stamps, explained
+here per AGENTS §6.
+
+Residue: cartography has never run against a live model — CannedModel only.
+`run_check`'s pytest -k-only domain is the deliberate contract for recordable
+checks. `verify_doc` rewrites whole docs to change one stamp line — content
+risk noted; keep stamps on their own line.
+
 ## 2026-08-05 — review-package defects fixed; evidence rules promoted (commit: this one)
 Authorization for the heddle/ edits, the human's verbatim words: "Can
 you please update workflows to prevent this from happening in the

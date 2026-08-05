@@ -12,4 +12,4 @@ Watch: denials count against the limit (spec §6); `repeat` on_exhausted
 'continue' lets the flow record the failure rather than dying silently.
 Check: `python -m pytest tests_heddle -q -k "run or narrows or repeat or outcome"`
 exits clean.
-Verified 2026-08-05 @ 893044f: 5 passed.
+Verified 2026-08-05 (this commit): 5 passed.

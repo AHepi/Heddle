@@ -104,3 +104,41 @@ write_finding:
   params:
     name: {pattern: "finding-[a-z0-9-]{1,40}\\.md"}
     body: {text: true}
+
+# Cartography artifacts. enumerate lists the map and writes the sweep
+# index (write_index); collect reads it back (read_index); verify_doc
+# re-runs a doc's recorded check (run_check — pytest over tests_heddle
+# with a -k expression, the shape every map check uses) and stamps with
+# the current commit (head_commit); mutation_probe restores its break
+# with restore_file.
+list_map:
+  kind: command
+  command: ["ls", "map"]
+
+write_index:
+  kind: write_file
+  root: reports/
+  params:
+    name: {pattern: "map-index\\.json"}
+    body: {text: true}
+
+read_index:
+  kind: read_json
+  path: reports/map-index.json
+
+run_check:
+  kind: command
+  command: ["python", "-m", "pytest", "{target}", "-q", "-k", "{expr}"]
+  params:
+    target: {pattern: "tests_heddle(/[a-z0-9_.]+)?"}
+    expr: {pattern: "[A-Za-z0-9_]+(( or | and | not )[A-Za-z0-9_]+)*"}
+
+head_commit:
+  kind: command
+  command: ["git", "rev-parse", "--short", "HEAD"]
+
+restore_file:
+  kind: command
+  command: ["git", "checkout", "--", "{path}"]
+  params:
+    path: {pattern: "(heddle|tests_heddle)/[a-z0-9_/]{1,60}\\.py"}

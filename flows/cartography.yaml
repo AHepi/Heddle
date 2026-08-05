@@ -1,0 +1,31 @@
+# Map maintenance: the discipline's §2 rules mechanized — stamps advance
+# only when re-run, and checks are audited for vacuousness. enumerate
+# lists the stamped docs; verify_doc re-runs each doc's recorded check
+# and re-stamps or marks it stale; mutation_probe breaks one guarded
+# thing to prove a sampled check can still fail. Cartography never
+# repairs: stale and vacuous findings are parked for the defect flow.
+# Records on every exit path.
+flow: cartography
+steps:
+  - step: navigate.navigate
+    as: worker
+
+  - step: enumerate.enumerate
+    as: cartographer
+
+  - collect: map_docs
+    from: tool(read_index)
+
+  - for_each:
+      list: map_docs
+      as: d
+      steps:
+        - step: verify_doc.verify_doc
+          as: cartographer
+          with: {doc: d}
+
+  - step: mutation_probe.mutation_probe
+    as: cartographer
+
+  - step: record.record
+    as: recorder
