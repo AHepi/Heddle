@@ -25,6 +25,7 @@ PACKAGES = {
     "triage": ["triage.yaml"],
     "publish": ["publish.yaml"],
     "postmortem": ["postmortem.yaml"],
+    "style": ["style.yaml"],
 }
 
 
