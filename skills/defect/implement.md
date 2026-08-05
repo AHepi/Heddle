@@ -1,6 +1,6 @@
 ---
 name: implement
-version: 5
+version: 6
 steps:
   implement:
     tools: [read_code, write_code, write_tests, run_ring]
@@ -33,5 +33,11 @@ Mechanics:
   actual output either way — if it still fails, still report `applied`
   honestly with the red output; verify and the flow's bounded retry
   handle iteration. Hiding a red run here only costs a loop later.
+- If the approved proposal states a size ceiling, compare the ACTUAL
+  edit size against it before finishing — the real diff, not the
+  proposal's estimate. Exceeding the ceiling is a stop in the standard
+  format (decision in one sentence, priced options, recommendation),
+  not a footnote: a ceiling checked only against the estimate trips on
+  nothing.
 
 Outcome: applied.

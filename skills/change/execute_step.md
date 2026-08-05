@@ -1,6 +1,6 @@
 ---
 name: execute_step
-version: 5
+version: 6
 steps:
   execute_step:
     tools: [read_code, write_code, write_tests, run_ring, write_map]
@@ -36,6 +36,11 @@ For the item at hand:
    `State:` line (next item, blockers). A fresh session resumes from
    the plan of record alone, with no memory of this one; if it could
    not, this session under-recorded.
+5. If the plan states a size ceiling, compare the ACTUAL edit size so
+   far against it — the real diff, not the plan's estimate. Exceeding
+   the ceiling is a stop in the standard format (decision in one
+   sentence, priced options, recommendation), not a footnote: a
+   ceiling checked only against the estimate trips on nothing.
 
 Cross-routing is strict: a defect discovered mid-change is parked — not
 fixed. Write the parked note for its future runner, at park time, while

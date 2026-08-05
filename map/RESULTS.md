@@ -1,5 +1,16 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — size ceilings checked against the actual diff (commit: this one)
+A recorded miss in the authority's working repo (193 insertions landed
+against a ≤150 ceiling with no stop firing) generalizes: a ceiling
+compared only to the plan-time estimate trips on nothing. execute_step
+(v6) and implement (v6) now compare the ACTUAL edit size against any
+ceiling the plan or approved proposal states, and an overrun is a stop
+in the standard format, not a footnote. Prose-only on the skill side (no
+names, steps, outcomes, or tools moved). Instruments: gate 38 passed,
+0 failed at this commit (re-measured after rebase onto the audit/
+packages/cartography work). Residue: unchanged from the previous entry.
+
 ## 2026-08-05 — style package: Pinker's Sense of Style as a workflow (this commit)
 
 Built from the uploaded writer's-guide report on Pinker's *Sense of
