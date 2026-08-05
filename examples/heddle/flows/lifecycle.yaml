@@ -1,0 +1,30 @@
+flow: lifecycle
+steps:
+  - step: review.derive
+    as: reviewer
+
+  - repeat:
+      max: 3
+      until: outcome(review.check) == ok
+      on_exhausted: escalate
+      steps:
+        - step: review.check
+          as: reviewer
+        - when: outcome(review.check) == problems_found
+          then:
+            - step: implement.fix
+              as: implementer
+
+  - collect: open_findings
+    from: tool(list_findings)
+
+  - for_each:
+      list: open_findings
+      as: f
+      steps:
+        - step: review.write_finding
+          as: reviewer
+
+  - ask: "Accept this review and publish?"
+    options: [accept, revise, reject]
+    store_as: human_decision

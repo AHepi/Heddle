@@ -1,0 +1,35 @@
+read_authority:
+  kind: read_file
+  root: docs/authority/
+  params:
+    doc: {one_of_files_in: docs/authority/}
+
+read_code:
+  kind: read_file
+  root: src/
+  params:
+    path: {one_of_files_in: src/}
+
+write_code:
+  kind: write_file
+  root: src/
+  params:
+    path: {pattern: "[a-z0-9_.-]{1,60}"}
+    body: {text: true}
+
+run_tests:
+  kind: command
+  command: ["pytest", "-q", "{suite}"]
+  params:
+    suite: {one_of: [unit, integration, smoke]}
+
+write_report:
+  kind: write_file
+  root: reports/
+  params:
+    name: {pattern: "[a-z0-9-]{1,40}\\.md"}
+    body: {text: true}
+
+list_findings:
+  kind: read_json
+  path: reports/findings.json

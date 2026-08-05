@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heddle"
+version = "0.1.0"
+description = "A small harness for skills (Heddle 0.1)"
+requires-python = ">=3.10"
+dependencies = ["pyyaml>=6"]
+
+[tool.setuptools]
+packages = ["heddle"]

@@ -1,0 +1,24 @@
+roles:
+  reviewer:
+    - tool: read_authority
+      form: full
+      when: always
+    - tool: read_code
+      form: full
+      when: [check]
+    - tool: run_tests
+      form: scratch
+      when: [check]
+      limit: 20
+    - tool: write_report
+      form: write_only
+      when: always
+
+  implementer:
+    - tool: read_code
+      form: full
+      when: always
+    - tool: write_code
+      form: full
+      when: [fix]
+      limit: 50
