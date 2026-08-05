@@ -1,5 +1,33 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-05 — one skill per step in per-workflow folders; skill-update flow (commit: this one)
+The three consolidated skills were re-split on the human's instruction:
+one step per file so each skill stays bite-sized for less capable models
+and can later be lifted into a tool, grouped one folder per workflow —
+skills/shared/ (navigate, record), skills/defect/ (goal, diagnose,
+reproduce, propose, implement, verify), skills/change/ (capture, specify,
+plan, execute_step, validate, deliver). The expanded prose from the
+consolidation survives, compressed per file; skill name = step name =
+file name, so references read name.step (diagnose.diagnose). New
+orchestrator flows/skill-update.yaml for editing skill files themselves:
+survey → human gate → redraft/confirm loop (max 2, wheel-checked) →
+record; new skills/skill-update/ (survey, redraft, confirm — redraft.md
+carries the house rules for skill files), new tools read_skill/
+write_skill rooted at skills/, new role editor. start.yaml routes to all
+three orchestrators. Tripwire explanation for the heddle/ diff:
+loader.py `load_skills` now discovers skills recursively and errors on
+duplicate names — required by the per-workflow folder layout the human
+asked for; none of PROTECTED.md items 1–5 are touched. Instruments: gate
+21 passed, 0 failed; `heddle check` (installed workaround) on all four
+flows — no problems; `heddle show` on skill-update confirms every step
+sees its tools. Residue: flows still never run end-to-end with a live
+model; summary-form filters still unshipped; validator's vacuous-keys
+hole still guarded only by the wheel; HEDDLE_0_1.md §1 still says
+`skills/*.md` — the spec is protected, so recording here rather than
+editing it: subfolder discovery is a deviation awaiting the human's
+verbatim spec decision (HEDDLE_0_2 candidate alongside the self-host
+question).
+
 ## 2026-08-05 — skills consolidated, flows repaired, smoke wheel added (commit: this one)
 The fourteen single-step skills were consolidated into three by discipline
 — shared.md (navigate, record), defect.md (goal…verify), change.md

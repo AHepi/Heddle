@@ -19,11 +19,22 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from heddle.loader import load_flow, load_package
+from heddle.errors import HeddleError
+from heddle.loader import load_flow, load_package, load_skills
 from heddle.validate import validate_package
 
 REPO = Path(__file__).resolve().parents[1]
-FLOWS = ["start.yaml", "defect.yaml", "change.yaml"]
+FLOWS = ["start.yaml", "defect.yaml", "change.yaml", "skill-update.yaml"]
+
+# One skill per step, grouped by workflow folder; skill name == step name.
+SKILLS = {
+    "shared": {"navigate", "record"},
+    "defect": {"goal", "diagnose", "reproduce", "propose", "implement",
+               "verify"},
+    "change": {"capture", "specify", "plan", "execute_step", "validate",
+               "deliver"},
+    "skill-update": {"survey", "redraft", "confirm"},
+}
 
 
 @pytest.fixture()
@@ -77,3 +88,27 @@ def test_every_root_step_assigns_a_declared_role(root_pkg):
     for fname in FLOWS:
         _, items = load_flow(root_pkg.root / "flows" / fname)
         walk(items, fname)
+
+
+def test_skills_load_from_workflow_folders(root_pkg):
+    expected = set().union(*SKILLS.values())
+    assert set(root_pkg.skills) == expected
+    for folder, names in SKILLS.items():
+        for name in names:
+            s = root_pkg.skills[name]
+            assert s.path.parent.name == folder, (
+                f"skill '{name}' is in {s.path.parent.name}/, "
+                f"expected {folder}/")
+            # one file, one step, named after the skill
+            assert set(s.steps) == {name}
+
+
+def test_duplicate_skill_names_are_an_error(tmp_path):
+    d = tmp_path / "skills" / "a"
+    d.mkdir(parents=True)
+    (tmp_path / "skills" / "b").mkdir()
+    text = "---\nname: twin\nsteps:\n  s:\n    tools: []\n---\n\n## s\nx\n"
+    (d / "one.md").write_text(text)
+    (tmp_path / "skills" / "b" / "two.md").write_text(text)
+    with pytest.raises(HeddleError, match="already declared"):
+        load_skills(tmp_path)

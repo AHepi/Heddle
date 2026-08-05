@@ -1,16 +1,17 @@
 # Orchestrator for making an addition or changing functionality. The
 # writing comes first: capture the intent, specify the requirement, plan
 # the steps — with a human gate after the spec and after the plan — before
-# any code moves. Every exit path ends in shared.record.
+# any code moves. Every exit path ends in record. Skills live in
+# skills/change/ and skills/shared/, one step per file.
 flow: change
 steps:
-  - step: shared.navigate
+  - step: navigate.navigate
     as: worker
 
-  - step: change.capture
+  - step: capture.capture
     as: worker
 
-  - step: change.specify
+  - step: specify.specify
     as: worker
 
   - ask: "Spec gate: does the REQ- doc describe what you want built, checkably?"
@@ -19,7 +20,7 @@ steps:
 
   - when: stored(spec_ok) == approve
     then:
-      - step: change.plan
+      - step: plan.plan
         as: worker
 
       - ask: "Plan gate: approve the ordered steps exactly as written (including any declared protected-surface edits)?"
@@ -33,30 +34,30 @@ steps:
           # will report the unfinished remainder as invalid.
           - repeat:
               max: 8
-              until: outcome(change.execute_step) == all_done
+              until: outcome(execute_step.execute_step) == all_done
               on_exhausted: continue
               steps:
-                - step: change.execute_step
+                - step: execute_step.execute_step
                   as: implementer
 
-          - step: change.validate
+          - step: validate.validate
             as: validator
 
-          - when: outcome(change.validate) == valid
+          - when: outcome(validate.validate) == valid
             then:
-              - step: change.deliver
+              - step: deliver.deliver
                 as: worker
-              - step: shared.record
+              - step: record.record
                 as: recorder
             else:
               - ask: "Validation failed; the mismatch is named in the step summary. The change is parked."
                 options: [park]
                 store_as: validation_halted
-              - step: shared.record
+              - step: record.record
                 as: recorder
         else:
-          - step: shared.record
+          - step: record.record
             as: recorder
     else:
-      - step: shared.record
+      - step: record.record
         as: recorder

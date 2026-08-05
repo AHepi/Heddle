@@ -53,6 +53,19 @@ roles:
     - tool: protected_tripwire
       form: summary
       when: [validate]
+  editor:
+    - tool: read_map
+      form: full
+      when: always
+    - tool: read_skill
+      form: full
+      when: [survey, redraft]
+    - tool: write_skill
+      form: write_only
+      when: [redraft]
+    - tool: run_wheel
+      form: summary
+      when: [confirm]
   recorder:
     - tool: read_map
       form: full

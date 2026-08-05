@@ -1,30 +1,31 @@
 # Orchestrator for diagnosing and fixing a defect. The order is the
 # discipline: no code moves until the failure is understood (diagnose),
 # demonstrated (reproduce), and approved by a human (propose gate).
-# Every exit path ends in shared.record.
+# Every exit path ends in record. Skills live in skills/defect/ and
+# skills/shared/, one step per file.
 flow: defect
 steps:
-  - step: shared.navigate
+  - step: navigate.navigate
     as: worker
 
-  - step: defect.goal
+  - step: goal.goal
     as: worker
 
-  - step: defect.diagnose
+  - step: diagnose.diagnose
     as: worker
 
-  - when: outcome(defect.diagnose) == inconclusive
+  - when: outcome(diagnose.diagnose) == inconclusive
     then:
       - ask: "Diagnosis is inconclusive. Review the evidence in the step summary and re-enter the flow with more; stopping here."
         options: [stop]
         store_as: diagnosis_halted
-      - step: shared.record
+      - step: record.record
         as: recorder
     else:
-      - step: defect.reproduce
+      - step: reproduce.reproduce
         as: worker
 
-      - step: defect.propose
+      - step: propose.propose
         as: worker
 
       - ask: "Approve the proposed fix exactly as written?"
@@ -38,15 +39,15 @@ steps:
           # what the record will show.
           - repeat:
               max: 2
-              until: outcome(defect.verify) == green
+              until: outcome(verify.verify) == green
               on_exhausted: continue
               steps:
-                - step: defect.implement
+                - step: implement.implement
                   as: implementer
-                - step: defect.verify
+                - step: verify.verify
                   as: validator
-          - step: shared.record
+          - step: record.record
             as: recorder
         else:
-          - step: shared.record
+          - step: record.record
             as: recorder

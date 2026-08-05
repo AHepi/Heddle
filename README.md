@@ -7,7 +7,7 @@ anything starts.
 ## Where to start
 
 Read this file, then enter through flows/start.yaml. Every task is routed to
-exactly one orchestrator: defect or change.
+exactly one orchestrator: defect, change, or skill-update.
 
 ## Orchestrators live in flows/, and only there
 
@@ -21,38 +21,41 @@ skill prose, both properties are gone. So:
 
 - **flows/start.yaml** — router. Asks the purpose, calls one orchestrator.
 - **flows/defect.yaml** — goal, diagnose, reproduce, propose, human approval,
-  implement, verify. Loops implement-verify at most twice. Records on every
-  exit path.
+  implement, verify. Loops implement-verify at most twice.
 - **flows/change.yaml** — capture, specify, spec gate, plan, plan gate,
-  execute one step at a time (at most eight), validate, deliver. Records on
-  every exit path.
+  execute one step at a time (at most eight), validate, deliver.
+- **flows/skill-update.yaml** — survey a skill and its dependents, human
+  approval, redraft, confirm with the smoke wheel (at most two cycles).
 
-Flow files use the spec's schema (`flow:` / `steps:`, `as:` for the role,
-`when:` with sibling `then:`/`else:`, `repeat:` with `steps:`). The smoke
-wheel asserts they parse non-vacuously — see TRAP-flow-vacuous-keys for why
-that check exists.
+Every orchestrator records on every exit path. Flow files use the spec's
+schema (`flow:` / `steps:`, `as:` for the role, `when:` with sibling
+`then:`/`else:`, `repeat:` with `steps:`). The smoke wheel asserts they parse
+non-vacuously — see TRAP-flow-vacuous-keys for why that check exists.
 
-## Skills (skills/), grouped by discipline
+## Skills (skills/): one step per file, one folder per workflow
 
-Three files. Steps are level-2 headings; the prose under a heading is the
-complete instruction that step's model receives.
+Each skill file is a single step — bite-sized on purpose, so a less capable
+model gets one complete, unambiguous instruction, and so any skill can later
+be lifted into a tool without untangling it from siblings. Skill name = step
+name = file name; references read `name.step` (e.g. `diagnose.diagnose`).
+Expand a skill by growing its prose in place; its public surface (name, step,
+outcomes, tools) is what flows, grants, and conditions depend on.
 
-- **skills/shared.md** — `navigate` (orient in the map, spin the smoke
-  wheel), `record` (write the ledgers; runs on every exit path).
-- **skills/defect.md** — `goal`, `diagnose`, `reproduce`, `propose`,
+- **skills/shared/** — `navigate`, `record`. Used by every workflow.
+- **skills/defect/** — `goal`, `diagnose`, `reproduce`, `propose`,
   `implement`, `verify`.
-- **skills/change.md** — `capture`, `specify`, `plan`, `execute_step`,
+- **skills/change/** — `capture`, `specify`, `plan`, `execute_step`,
   `validate`, `deliver`.
-
-References are always `skill.step` (e.g. `defect.diagnose`,
-`change.execute_step`, `shared.record`).
+- **skills/skill-update/** — `survey`, `redraft`, `confirm`. The workflow
+  for editing skill files themselves; redraft.md carries the house rules
+  every skill must follow.
 
 ## Instruments, cheapest first
 
 - **The smoke wheel** (`run_wheel`) — one fast spin proving the harness
   itself turns: packages load, flows parse non-vacuously, references resolve,
   every step has a role. Backed by tests_heddle/test_smoke.py. Run at
-  navigate, verify, and validate, always before the heavier instruments.
+  navigate, verify, validate, and confirm, always before heavier instruments.
 - **The ring** (`run_ring`) — targeted tests for the touched area.
 - **The gate** (`run_gate`) — the full suite. Green means every test passes.
 - **The tripwire** (`protected_tripwire`) — the diff against protected
@@ -62,9 +65,11 @@ References are always `skill.step` (e.g. `defect.diagnose`,
 ## Grants and tools
 
 - tools.yaml — every tool the model may call; a target is never free text.
-- grants.yaml — which role (worker, implementer, validator, recorder) may use
-  which tool at which step. Call-time grants are the intersection of parent
-  and child, never wider.
+  Skill files are reachable only through `read_skill`/`write_skill`, rooted
+  at skills/.
+- grants.yaml — which role (worker, implementer, validator, editor,
+  recorder) may use which tool at which step. Call-time grants are the
+  intersection of parent and child, never wider.
 
 ## The map (map/)
 
