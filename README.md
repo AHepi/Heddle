@@ -124,7 +124,11 @@ export. Shipped: **triage** (raw request → routed ready-to-run item),
 **publish** (bounded release; the push grant has `limit: 1` — the
 grant-narrowing demo), **postmortem** (incident → timeline from the
 record → cause → preventions), **style** (Pinker's Sense of Style:
-critique with quoted evidence → classic-style rewrite as a new note).
+critique with quoted evidence → classic-style rewrite as a new note),
+**bounded** (bounded implementation: scope → audit → plan → human gate
+→ one bounded task per implement/verify/review loop, the reviewer
+strictly read-only by grant → core-only qualification → delivery gate;
+commit/push authority stays with the human).
 Adoption is copy + merge, and merging the grants fragment is the
 authorization moment — installed skills do nothing until granted (§9).
 The inventory is pinned in tests_heddle/test_packages.py; see

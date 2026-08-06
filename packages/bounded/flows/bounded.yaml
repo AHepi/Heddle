@@ -1,0 +1,72 @@
+# Bounded implementation: scope and baseline -> read-only audit ->
+# bounded plan -> human plan gate -> one bounded task at a time
+# (implement -> focused verify -> separate read-only review), then
+# final core-only qualification and a delivery gate that asks before
+# any commit or push. The separations that matter are enforced by the
+# grants, not by prose: only implement may write code, the reviewer
+# holds no write_code at all, and only the human gates approve the
+# plan, a repair, and the delivery.
+flow: bounded
+steps:
+  - step: scope.scope
+    as: lead
+
+  - step: audit.audit
+    as: lead
+
+  - step: plan.plan
+    as: lead
+
+  - ask: "Plan gate: approve the bounded task sequence exactly as written — scope, exclusions, per-task allowlists?"
+    options: [approve, revise]
+    store_as: plan_ok
+
+  - when: stored(plan_ok) == approve
+    then:
+      # One bounded task per iteration, at most eight. implement
+      # reports all_done when no tasks remain; on_exhausted continue so
+      # an over-long sequence still reaches qualify, which reports the
+      # unfinished remainder as unqualified.
+      - repeat:
+          max: 8
+          until: outcome(implement.implement) == all_done
+          on_exhausted: continue
+          steps:
+            - step: implement.implement
+              as: worker
+
+            - when: outcome(implement.implement) == implemented
+              then:
+                - step: verify.verify
+                  as: worker
+
+                - when: outcome(verify.verify) == verified
+                  then:
+                    - step: review.review
+                      as: reviewer
+
+                    - when: outcome(review.review) == findings
+                      then:
+                        - ask: "Review wrote actionable findings to notes/. Plan ONE bounded repair task limited to the findings, or park?"
+                          options: [repair, park]
+                          store_as: repair_ok
+                  else:
+                    - ask: "Focused verification did not pass — the step summary names why. Repair within the allowlist, or park?"
+                      options: [repair, park]
+                      store_as: verify_ok
+
+      - step: qualify.qualify
+        as: lead
+
+      - when: outcome(qualify.qualify) == qualified
+        then:
+          - step: deliver.deliver
+            as: lead
+
+          - ask: "Delivery gate: the delivery note separates intended changes from the dirty tree and lists what still needs your authorization. Commit or push?"
+            options: [deliver, park]
+            store_as: delivery_ok
+        else:
+          - ask: "Qualification did not pass; the qualification note separates core failures from pre-existing or excluded ones. The work is parked."
+            options: [park]
+            store_as: qualify_parked

@@ -1,0 +1,43 @@
+# The bounded-implementation tool domain. Code under work lives in
+# repo/ (a tiny seed ships with the package; repoint the roots at your
+# source tree on adoption). A read target is never free text
+# (one_of_files_in); the write pattern, not the model, decides what may
+# be written. Checks and Git reads are fixed zero-parameter commands —
+# repoint run_checks at your own focused suite when adopting.
+read_code:
+  kind: read_file
+  root: repo/
+  params:
+    path: {one_of_files_in: repo/}
+
+write_code:
+  kind: write_file
+  root: repo/
+  params:
+    path: {pattern: "[a-z0-9_/.-]{1,80}"}
+    body: {text: true}
+
+read_note:
+  kind: read_file
+  root: notes/
+  params:
+    doc: {one_of_files_in: notes/}
+
+write_note:
+  kind: write_file
+  root: notes/
+  params:
+    name: {pattern: "[a-z0-9-]{1,60}\\.md"}
+    body: {text: true}
+
+run_checks:
+  kind: command
+  command: ["python", "-m", "pytest", "repo/", "-q"]
+
+git_status:
+  kind: command
+  command: ["git", "status", "--short"]
+
+git_identity:
+  kind: command
+  command: ["git", "log", "-1", "--format=%H%n%D"]

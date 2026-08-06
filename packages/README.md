@@ -52,6 +52,12 @@ TRAP-self-host-runtime-dir. From any other repo, plain `heddle` works.)
 - **style/** — Pinker's Sense of Style as a workflow: critique a draft
   against the book's checklist with quoted evidence → rewrite into
   classic style as a new note; a sound draft skips the rewrite.
+- **bounded/** — bounded implementation: scope + baseline → read-only
+  audit → bounded plan → human gate → one bounded task at a time
+  (implement → focused verify → strictly read-only review) → core-only
+  qualification → delivery gate. The separations are grants: only
+  implement writes code, the reviewer holds no write at all, and
+  commit/push authority stays with the human.
 
 The package list is pinned in tests_heddle/test_packages.py; adding or
 removing a package moves that pin in the same commit (AGENTS.md §3).

@@ -26,6 +26,7 @@ PACKAGES = {
     "publish": ["publish.yaml"],
     "postmortem": ["postmortem.yaml"],
     "style": ["style.yaml"],
+    "bounded": ["bounded.yaml"],
 }
 
 

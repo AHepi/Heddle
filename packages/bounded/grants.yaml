@@ -1,0 +1,51 @@
+# The separations that make the workflow bounded, enforced by the
+# runtime: the lead plans and reports but never writes code; the worker
+# writes code only at implement and runs checks only at verify; the
+# reviewer holds no write_code and no run_checks at all — a strictly
+# read-only review, plus its report note.
+roles:
+  lead:
+    - tool: git_status
+      form: full
+      when: [scope, deliver]
+    - tool: git_identity
+      form: full
+      when: [scope, deliver]
+    - tool: read_code
+      form: full
+      when: [scope, audit, plan, qualify, deliver]
+    - tool: read_note
+      form: full
+      when: [plan, qualify, deliver]
+    - tool: run_checks
+      form: full
+      when: [qualify]
+    - tool: write_note
+      form: write_only
+      when: [scope, audit, plan, qualify, deliver]
+  worker:
+    - tool: read_code
+      form: full
+      when: [implement, verify]
+    - tool: read_note
+      form: full
+      when: [implement, verify]
+    - tool: write_code
+      form: write_only
+      when: [implement]
+    - tool: run_checks
+      form: full
+      when: [verify]
+    - tool: write_note
+      form: write_only
+      when: [implement, verify]
+  reviewer:
+    - tool: read_code
+      form: full
+      when: [review]
+    - tool: read_note
+      form: full
+      when: [review]
+    - tool: write_note
+      form: write_only
+      when: [review]

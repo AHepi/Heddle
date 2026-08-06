@@ -1,5 +1,69 @@
 # RESULTS — newest first. The running truth: proven, broken, fixed, parked.
 
+## 2026-08-06 — bounded package: bounded implementation as a workflow (this commit)
+
+Built from the uploaded bounded-implementation SKILL.md (small strictly
+bounded tasks, focused verification, separate read-only review,
+core-only qualification, delivery gated on the human). Shipped as
+packages/bounded/, self-contained like its siblings. Eight skills, one
+step per file — scope (user authority + baseline: branch/HEAD/status
+recorded, wrong branch = stop, user changes untouchable), audit
+(read-only classification: core blocker / compatibility obligation /
+optional / unrelated; uncertain means excluded), plan (the seven-section
+bounded-task format; executable prompt only for the next task;
+successor mutation boundaries recorded), implement (the allowlist is a
+wall; failures are evidence to classify, not authority to roam; repair
+within scope, record-and-stop beyond it), verify (focused checks only;
+green means ready-for-review, never accepted), review (strictly
+read-only; actionable findings with file:line; recommends acceptance,
+never grants it; the phase-level tier routed to a separate independent
+review), qualify (core-only matrix; excluded systems never block;
+attempt-family ledger, two terminal failures stop the family), deliver
+(recheck identity against baseline, separate intended from dirty tree,
+no destructive cleanup, commit/push stays with the human).
+
+The separations the doc cares about are grants, not prose: the lead
+plans and reports but holds no write_code; the worker writes code only
+at implement and runs checks only at verify; the reviewer holds no
+write_code and no run_checks at all. The flow gates the plan, any
+repair, and the delivery on the human. Seed repo/ (one module, one
+test) gives run_checks something real to run; notes/example-task.md is
+a bounded task in the required format, as template.
+
+Instruments: gate 41 passed, 0 failed (PACKAGES pin moved in this
+commit); `heddle check` (installed) clean on bounded plus all four
+sibling packages and the seven root flows; `heddle show` confirms
+per-step visibility exactly as granted; scripted live runs rc 0 on two
+paths — the straight path (implement reports all_done → qualify →
+deliver, both human gates) and the full task loop (implement wrote
+real code through write_code, verify ran the real seed suite, review
+recommended acceptance; the scripted reviewer's write_code attempt was
+not in its visible set and was dropped, zero denials in the final
+runs). Trap census: TRAP-inventory-pin-lags-surface applies — pin,
+both READMEs, and this entry land in this commit;
+TRAP-flow-vacuous-keys guarded by the packages wheel's non-vacuous
+parse; TRAP-self-host-runtime-dir — checks run from the installed
+lib; no other matches. Tripwire: heddle/ and HEDDLE_0_1.md untouched;
+map/ change is this ledger entry only.
+
+Residue: never run against a live model — the scripted runs prove
+control flow and per-step visibility only. The canned model cannot
+change its answer across repeat iterations, so the loop path ran to
+max 8 with idempotent writes rather than exiting on all_done after one
+task; a live model would report all_done when the plan is spent. The
+doc's specialized-gate routing (spec-determinacy, independent-review,
+the lifecycle orchestrators) is referenced in review's prose but ships
+no skills — those are separate packages if they are ever built.
+run_checks is fixed at `python -m pytest repo/ -q`; adopters repoint
+it (README says so). The doc's component-lifecycle envelope
+(GATE_DISPATCH, epochs, leases) was not packaged — it presumes a
+multi-window runtime Heddle does not have; recorded here rather than
+invented. Skill names are generic (scope, plan, review, ...) and may
+collide on adoption — the loader's duplicate error catches it,
+packages/README documents the rename path. Run artifacts (script
+files, generated notes, the farewell-writing seed mutation) were
+exercised and removed.
+
 ## 2026-08-05 — size ceilings checked against the actual diff (commit: this one)
 A recorded miss in the authority's working repo (193 insertions landed
 against a ≤150 ceiling with no stop firing) generalizes: a ceiling
